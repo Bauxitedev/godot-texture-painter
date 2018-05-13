@@ -816,7 +816,8 @@ custom_constants/shadow_offset_y = 1
 text = "WASD to rotate camera
 Left click to paint
 Right click to place decals
-Scroll to change brush size
+Hold F and move mouse to change brush size
+Hold Shift+F and move mouse to change brush hardness
 1/2/3/4 to draw albedo/roughness/metalness/emission
 "
 align = 1
@@ -874,7 +875,6 @@ __meta__ = {
 
 [node name="brush_preview" type="VBoxContainer" parent="ui" index="5"]
 
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
