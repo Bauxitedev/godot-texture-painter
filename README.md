@@ -2,6 +2,8 @@
 
 This is a prototype for a PBR texture painter in Godot 3.0. It's meant to be mostly a proof-of-concept, to show that it's possible at all - but I might turn it into a full blown application one day (but no promises!).
 
+![Paint](images/demo.gif)
+
 The painting algorithm is GPU-accelerated, so you can paint on extremely large textures with huge brushes on very high poly models without lag.
 
 You can paint albedo, roughness, metalness and emission. Also, you can right click to place decals, and use the slider on the top right to change the brush softness. Other controls are displayed on the GUI.
