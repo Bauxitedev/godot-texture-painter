@@ -8,7 +8,7 @@ The painting algorithm is GPU-accelerated, so you can paint on extremely large t
 
 You can paint albedo, roughness, metalness and emission. Also, you can right click to place decals, and use the slider on the top right to change the brush softness. Other controls are displayed on the GUI.
 
-I'll upload a video soon.
+[Here's a video of it in action.](https://www.youtube.com/watch?v=nbG_XAxmIlA)
 
 # How it works
 
