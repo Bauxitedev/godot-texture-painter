@@ -3,6 +3,8 @@ extends WorldEnvironment
 
 var size = 4 # Note - this is actually scale inverted
 
+signal active_texture_changed(idx)
+
 onready var textures = $textures
 
 class InputHandlerState:
@@ -19,6 +21,7 @@ enum States {
 	Rotate,
 	Zoom,
 	Pan,
+	ColorPick,
 }
 
 class BrushSoftnessChangeState extends InputHandlerState:
@@ -35,14 +38,15 @@ class BrushSoftnessChangeState extends InputHandlerState:
 		
 		length_of_slider = vp.size.y / 4
 		
-		initial_softness = parent.get_node("ui/brush_preview/softness_slider").value
+		initial_softness = PainterState.brush.softness_slider.value
 		
 		offset = initial_softness * length_of_slider
 		
-		initial_mouse_position = vp.get_mouse_position()
+		initial_mouse_position = parent.get_tree().root.get_mouse_position()
+		
+		Input.warp_mouse_position(initial_mouse_position + Vector2(offset, 0) * initial_softness)
 		
 		middle_position = vp.get_mouse_position()
-		middle_position.x -= offset
 	
 	func handle_input(parent, event):
 		if !Input.is_action_pressed("paint_change_brush_softness"):
@@ -51,7 +55,7 @@ class BrushSoftnessChangeState extends InputHandlerState:
 		
 		if event is InputEventMouseMotion:
 			var difference = (event.global_position - middle_position).length() / length_of_slider
-			parent.get_node("ui/brush_preview/softness_slider").value = difference
+			PainterState.brush.softness_slider.value = difference
 	
 	func update(parent, delta):
 		if !Input.is_action_pressed("paint_change_brush_softness"):
@@ -76,11 +80,12 @@ class BrushResizeState extends InputHandlerState:
 	func _init(parent):
 		var vp = parent.get_viewport()
 		middle_position = vp.get_mouse_position()
-		initial_mouse_position = vp.get_mouse_position()
+		initial_mouse_position = parent.get_tree().root.get_mouse_position()
 		
 		offset = vp.size.y / parent.size / 4
 		
-		middle_position.x -= offset
+		Input.warp_mouse_position(initial_mouse_position + Vector2(offset, 0))
+		
 		initial_size = parent.size
 	
 	func handle_input(parent, event):
@@ -134,20 +139,29 @@ class PaintState extends InputHandlerState:
 		
 		if ev is InputEventKey and ev.pressed:
 			
+			var changed_texture = true
+			
 			match ev.scancode:
 				KEY_1: parent.textures.current_slot = 0
 				KEY_2: parent.textures.current_slot = 1
 				KEY_3: parent.textures.current_slot = 2
 				KEY_4: parent.textures.current_slot = 3
-				
+				_: changed_texture = false
+			
+			if changed_texture:
+				parent.emit_signal("active_texture_changed", parent.textures.current_slot)
+	
+	func update(parent, delta):
+		
+		if Input.is_action_just_pressed("open_color_picker"):
+			parent.state = parent.state_classes[parent.ColorPick].new(parent)
 		
 		if Input.is_action_pressed("paint_resize_brush"):
 			parent.state = parent.state_classes[parent.BrushResize].new(parent)
 		
 		if Input.is_action_pressed("paint_change_brush_softness"):
 			parent.state = parent.state_classes[parent.BrushSoftnessChange].new(parent)
-	
-	func update(parent, delta):
+		
 		# Cam controls
 		var cam = parent.get_node("spatial/camroot/cam")
 		parent.rotate_cam(cam, delta)
@@ -171,7 +185,7 @@ class PaintState extends InputHandlerState:
 		parent.get_node("ui/cursor").rect_position = parent.get_viewport().get_mouse_position() - rect_size / 2
 		
 		# Update paint shaders
-		parent.textures.update_shaders(mouse_pos, parent.size, cam, parent.get_node("ui/margin/picker").color)
+		parent.textures.update_shaders(mouse_pos, parent.size, cam, PainterState.brush.color)
 
 class RotateState extends InputHandlerState:
 	func _init(parent):
@@ -251,6 +265,40 @@ class PanState extends InputHandlerState:
 	func update(parent, event):
 		pass
 
+class ColorPickState extends InputHandlerState:
+	
+	var color_picker
+	var initial_mouse_position
+	
+	func _init(parent):
+		parent.get_node("ui/cursor").visible = false
+		
+		initial_mouse_position = parent.get_tree().root.get_mouse_position()
+		var middle_position = parent.get_viewport().get_mouse_position()
+		
+		color_picker = parent.get_node("ui/ColorPicker")
+		color_picker.rect_position = middle_position - color_picker.rect_size / 2
+		color_picker.color = PainterState.brush.color
+		color_picker.show()
+		
+		pass
+	
+	func handle_input(parent, event):
+		pass
+	
+	func update(parent, event):
+		
+		if Input.is_action_just_pressed("open_color_picker"):
+			color_picker.hide()
+			parent.get_node("ui/cursor").visible = true
+			parent.state = parent.state_classes[parent.Paint].new()
+			Input.warp_mouse_position(initial_mouse_position)
+			return
+		
+		PainterState.brush.color = color_picker.color
+		PainterState.brush.color_picker.color = color_picker.color
+		pass
+
 func rotate_cam(cam, delta):
 	var rotspeed = 2
 	if Input.is_action_pressed("ui_up"):
@@ -272,6 +320,7 @@ var state_classes = {
 	Rotate: RotateState,
 	Zoom: ZoomState,
 	Pan: PanState,
+	ColorPick: ColorPickState,
 }
 
 func _process(delta):
@@ -285,11 +334,11 @@ func _ready():
 	change_mesh(preload("res://assets/models/Suzanne.mesh"))	
 	
 	# For debugging so you can see this works...
-	#yield(get_tree().create_timer(2.0), "timeout")
-	#change_mesh(preload("res://assets/models/Torus.mesh"))
+	# yield(get_tree().create_timer(2.0), "timeout")
+	# change_mesh(preload("res://assets/models/Torus.mesh"))
 	
-	#yield(get_tree().create_timer(2.0), "timeout")
-	#change_mesh(preload("res://assets/models/Suzanne.mesh"))
+	# yield(get_tree().create_timer(2.0), "timeout")
+	# change_mesh(preload("res://assets/models/Suzanne.mesh"))
 
 func _on_softness_slider_value_changed(value):
 	

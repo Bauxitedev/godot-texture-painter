@@ -11,8 +11,12 @@ config_version=3
 [application]
 
 config/name="Texture Painter"
-run/main_scene="res://main.tscn"
+run/main_scene="res://views/MainView.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+PainterState="*res://autoloads/PainterState.gd"
 
 [display]
 
@@ -40,6 +44,8 @@ ui_down=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"
 paint_resize_brush=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":70,"unicode":0,"echo":false,"script":null)
  ]
 paint_change_brush_softness=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":true,"control":false,"meta":false,"command":false,"pressed":false,"scancode":70,"unicode":0,"echo":false,"script":null)
+ ]
+open_color_picker=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":67,"unicode":0,"echo":false,"script":null)
  ]
 
 [rendering]

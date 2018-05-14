@@ -26,8 +26,8 @@ func update_shaders(mouse_pos, size, cam, color):
 		var slot_matches = Slot[paint_sprite_name.to_upper()] == current_slot
 		paint_sprite.visible = should_paint && slot_matches
 		
-		var label = get_node("/root/main/ui/hbox/" + paint_sprite_name + "/label")
-		label.add_color_override("font_color", Color(1,0.3,0) if slot_matches else Color(1,1,1))
+		# var label = get_node("/root/main/ui/hbox/" + paint_sprite_name + "/label")
+		# label.add_color_override("font_color", Color(1,0.3,0) if slot_matches else Color(1,1,1))
 		
 		if !paint_sprite.visible:
 			continue
