@@ -22,6 +22,9 @@ func _ready():
 	# workaround for https://github.com/godotengine/godot/pull/18161
 	$View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton.get_popup().connect("modal_closed", self, "_on_ColorPickerButton_popup_closed")
 
+	# little hack
+	_on_main_active_texture_changed(0)
+
 
 func _on_ColorPickerButton_popup_closed():
 	$View/MainFrame/LeftPanel/ViewportContainer/Viewport.gui_disable_input = false

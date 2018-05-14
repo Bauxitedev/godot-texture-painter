@@ -42,10 +42,11 @@ class BrushSoftnessChangeState extends InputHandlerState:
 		
 		offset = initial_softness * length_of_slider
 		
-		initial_mouse_position = vp.get_mouse_position()
+		initial_mouse_position = parent.get_tree().root.get_mouse_position()
+		
+		Input.warp_mouse_position(initial_mouse_position + Vector2(offset, 0) * initial_softness)
 		
 		middle_position = vp.get_mouse_position()
-		middle_position.x -= offset
 	
 	func handle_input(parent, event):
 		if !Input.is_action_pressed("paint_change_brush_softness"):
@@ -79,11 +80,12 @@ class BrushResizeState extends InputHandlerState:
 	func _init(parent):
 		var vp = parent.get_viewport()
 		middle_position = vp.get_mouse_position()
-		initial_mouse_position = vp.get_mouse_position()
+		initial_mouse_position = parent.get_tree().root.get_mouse_position()
 		
 		offset = vp.size.y / parent.size / 4
 		
-		middle_position.x -= offset
+		Input.warp_mouse_position(initial_mouse_position + Vector2(offset, 0))
+		
 		initial_size = parent.size
 	
 	func handle_input(parent, event):
@@ -271,10 +273,11 @@ class ColorPickState extends InputHandlerState:
 	func _init(parent):
 		parent.get_node("ui/cursor").visible = false
 		
-		initial_mouse_position = parent.get_viewport().get_mouse_position()
+		initial_mouse_position = parent.get_tree().root.get_mouse_position()
+		var middle_position = parent.get_viewport().get_mouse_position()
 		
 		color_picker = parent.get_node("ui/ColorPicker")
-		color_picker.rect_position = initial_mouse_position - color_picker.rect_size / 2
+		color_picker.rect_position = middle_position - color_picker.rect_size / 2
 		color_picker.color = PainterState.brush.color
 		color_picker.show()
 		
