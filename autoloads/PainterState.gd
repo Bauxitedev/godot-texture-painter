@@ -1,5 +1,8 @@
 extends Node
 
+signal active_texture_changed(tex)
+
+
 var brush = {
 	"softness_slider": null,
 	"size": 4,
@@ -22,6 +25,15 @@ enum TextureType {
 	Metalness,
 	Emission,
 }
+
+var textures_node = null
+
+var active_texture = 0
+
+func set_active_texture(tex):
+	active_texture = tex
+	textures_node.current_slot = tex
+	emit_signal("active_texture_changed", tex)
 
 func _ready():
 	pass
