@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
 [ext_resource path="res://textures/textures.gd" type="Script" id=2]
@@ -6,8 +6,6 @@
 [ext_resource path="res://textures/mesh/base.tscn" type="PackedScene" id=4]
 [ext_resource path="res://textures/mesh/position.gd" type="Script" id=5]
 [ext_resource path="res://textures/mesh/normal.gd" type="Script" id=6]
-[ext_resource path="res://assets/shaders/brush_preview_shader.tres" type="Material" id=7]
-[ext_resource path="res://assets/textures/logo.svg" type="Texture" id=8]
 
 [sub_resource type="ProceduralSky" id=1]
 
@@ -110,31 +108,7 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Background", "Glow", "Glow/levels", "Tonemap" ]
 
-[sub_resource type="ViewportTexture" id=3]
-
-resource_local_to_scene = true
-flags = 0
-viewport_path = NodePath("textures/paint/albedo")
-
-[sub_resource type="ViewportTexture" id=4]
-
-resource_local_to_scene = true
-flags = 0
-viewport_path = NodePath("textures/paint/roughness")
-
-[sub_resource type="ViewportTexture" id=5]
-
-resource_local_to_scene = true
-flags = 0
-viewport_path = NodePath("textures/paint/metalness")
-
-[sub_resource type="ViewportTexture" id=6]
-
-resource_local_to_scene = true
-flags = 0
-viewport_path = NodePath("textures/paint/emission")
-
-[sub_resource type="StyleBoxFlat" id=7]
+[sub_resource type="StyleBoxFlat" id=3]
 
 content_margin_left = -1.0
 content_margin_right = -1.0
@@ -163,7 +137,7 @@ anti_aliasing = true
 anti_aliasing_size = 1
 _sections_unfolded = [ "Border", "Border Width", "Corner Radius" ]
 
-[sub_resource type="ArrayMesh" id=8]
+[sub_resource type="ArrayMesh" id=4]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -181,31 +155,31 @@ surfaces/0 = {
 }
 _sections_unfolded = [ "surface_1" ]
 
-[sub_resource type="ViewportTexture" id=9]
+[sub_resource type="ViewportTexture" id=5]
 
 resource_local_to_scene = true
 flags = 0
 viewport_path = NodePath("textures/paint/albedo")
 
-[sub_resource type="ViewportTexture" id=10]
+[sub_resource type="ViewportTexture" id=6]
 
 resource_local_to_scene = true
 flags = 0
 viewport_path = NodePath("textures/paint/emission")
 
-[sub_resource type="ViewportTexture" id=11]
+[sub_resource type="ViewportTexture" id=7]
 
 resource_local_to_scene = true
 flags = 0
 viewport_path = NodePath("textures/paint/metalness")
 
-[sub_resource type="ViewportTexture" id=12]
+[sub_resource type="ViewportTexture" id=8]
 
 resource_local_to_scene = true
 flags = 0
 viewport_path = NodePath("textures/paint/roughness")
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=9]
 
 resource_local_to_scene = true
 render_priority = 0
@@ -217,6 +191,7 @@ flags_use_point_size = false
 flags_world_triplanar = false
 flags_fixed_size = false
 flags_albedo_tex_force_srgb = false
+flags_do_not_receive_shadows = false
 vertex_color_use_as_albedo = false
 vertex_color_is_srgb = false
 params_diffuse_mode = 0
@@ -230,20 +205,20 @@ params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
-albedo_texture = SubResource( 9 )
+albedo_texture = SubResource( 5 )
 metallic = 1.0
 metallic_specular = 0.5
-metallic_texture = SubResource( 11 )
+metallic_texture = SubResource( 7 )
 metallic_texture_channel = 4
 roughness = 1.0
-roughness_texture = SubResource( 12 )
+roughness_texture = SubResource( 8 )
 roughness_texture_channel = 4
 emission_enabled = true
 emission = Color( 0, 0, 0, 1 )
 emission_energy = 1.0
 emission_operator = 0
 emission_on_uv2 = false
-emission_texture = SubResource( 10 )
+emission_texture = SubResource( 6 )
 normal_enabled = false
 rim_enabled = false
 clearcoat_enabled = false
@@ -267,18 +242,15 @@ distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission", "Flags", "Metallic", "Parameters", "Resource", "Roughness", "Vertex Color" ]
 
 [node name="main" type="WorldEnvironment" index="0"]
-
 environment = SubResource( 2 )
 script = ExtResource( 1 )
 
 [node name="textures" type="Node" parent="." index="0"]
-
 script = ExtResource( 2 )
 
 [node name="paint" type="Node" parent="textures" index="0"]
 
 [node name="albedo" type="Viewport" parent="textures/paint" index="0"]
-
 editor/display_folded = true
 arvr = false
 size = Vector2( 2048, 2048 )
@@ -288,6 +260,7 @@ transparent_bg = true
 msaa = 0
 hdr = true
 disable_3d = false
+keep_3d_linear = false
 usage = 2
 debug_draw = 0
 render_target_v_flip = true
@@ -308,7 +281,6 @@ _sections_unfolded = [ "Render Target" ]
 [node name="paint_sprite" type="ColorRect" parent="textures/paint/albedo" index="0" groups=[
 "paint_sprite",
 ]]
-
 material = ExtResource( 3 )
 anchor_left = 0.0
 anchor_top = 0.0
@@ -324,7 +296,6 @@ color = Color( 1, 1, 1, 1 )
 _sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "Rect", "Transform" ]
 
 [node name="roughness" type="Viewport" parent="textures/paint" index="1"]
-
 editor/display_folded = true
 arvr = false
 size = Vector2( 2048, 2048 )
@@ -334,6 +305,7 @@ transparent_bg = true
 msaa = 0
 hdr = true
 disable_3d = false
+keep_3d_linear = false
 usage = 2
 debug_draw = 0
 render_target_v_flip = true
@@ -354,7 +326,6 @@ _sections_unfolded = [ "Render Target" ]
 [node name="paint_sprite" type="ColorRect" parent="textures/paint/roughness" index="0" groups=[
 "paint_sprite",
 ]]
-
 material = ExtResource( 3 )
 anchor_left = 0.0
 anchor_top = 0.0
@@ -370,7 +341,6 @@ color = Color( 1, 1, 1, 1 )
 _sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "Rect", "Transform" ]
 
 [node name="metalness" type="Viewport" parent="textures/paint" index="2"]
-
 editor/display_folded = true
 arvr = false
 size = Vector2( 2048, 2048 )
@@ -380,6 +350,7 @@ transparent_bg = true
 msaa = 0
 hdr = true
 disable_3d = false
+keep_3d_linear = false
 usage = 2
 debug_draw = 0
 render_target_v_flip = true
@@ -400,7 +371,6 @@ _sections_unfolded = [ "Render Target" ]
 [node name="paint_sprite" type="ColorRect" parent="textures/paint/metalness" index="0" groups=[
 "paint_sprite",
 ]]
-
 material = ExtResource( 3 )
 anchor_left = 0.0
 anchor_top = 0.0
@@ -416,7 +386,6 @@ color = Color( 1, 1, 1, 1 )
 _sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "Rect", "Transform" ]
 
 [node name="emission" type="Viewport" parent="textures/paint" index="3"]
-
 editor/display_folded = true
 arvr = false
 size = Vector2( 2048, 2048 )
@@ -426,6 +395,7 @@ transparent_bg = true
 msaa = 0
 hdr = true
 disable_3d = false
+keep_3d_linear = false
 usage = 2
 debug_draw = 0
 render_target_v_flip = true
@@ -446,7 +416,6 @@ _sections_unfolded = [ "Render Target" ]
 [node name="paint_sprite" type="ColorRect" parent="textures/paint/emission" index="0" groups=[
 "paint_sprite",
 ]]
-
 material = ExtResource( 3 )
 anchor_left = 0.0
 anchor_top = 0.0
@@ -464,15 +433,14 @@ _sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "R
 [node name="mesh" type="Node" parent="textures" index="1"]
 
 [node name="position" parent="textures/mesh" index="0" instance=ExtResource( 4 )]
-
+keep_3d_linear = false
 script = ExtResource( 5 )
 
 [node name="normal" parent="textures/mesh" index="1" instance=ExtResource( 4 )]
-
+keep_3d_linear = false
 script = ExtResource( 6 )
 
 [node name="ui" type="CanvasLayer" parent="." index="1"]
-
 layer = 1
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -480,7 +448,6 @@ scale = Vector2( 1, 1 )
 transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
 [node name="button_paint" type="TextureButton" parent="ui" index="0"]
-
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -501,278 +468,7 @@ expand = true
 stretch_mode = 1
 _sections_unfolded = [ "Focus", "Mouse", "Size Flags", "Textures" ]
 
-[node name="hbox" type="HBoxContainer" parent="ui" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 447.0
-margin_bottom = 161.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-alignment = 0
-_sections_unfolded = [ "Margin", "Size Flags", "Theme", "custom_constants" ]
-
-[node name="albedo" type="VBoxContainer" parent="ui/hbox" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 103.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="label" type="Label" parent="ui/hbox/albedo" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 103.0
-margin_bottom = 14.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.498039 )
-custom_constants/shadow_offset_x = 0
-custom_constants/shadow_offset_y = 1
-text = "Albedo"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
-
-[node name="rect" type="TextureRect" parent="ui/hbox/albedo" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 18.0
-margin_right = 103.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = SubResource( 3 )
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
-
-[node name="roughness" type="VBoxContainer" parent="ui/hbox" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 107.0
-margin_right = 210.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="label" type="Label" parent="ui/hbox/roughness" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 103.0
-margin_bottom = 14.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.498039 )
-custom_constants/shadow_offset_x = 0
-custom_constants/shadow_offset_y = 1
-text = "Roughness"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
-
-[node name="rect" type="TextureRect" parent="ui/hbox/roughness" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 18.0
-margin_right = 103.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = SubResource( 4 )
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
-
-[node name="metalness" type="VBoxContainer" parent="ui/hbox" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 214.0
-margin_right = 317.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="label" type="Label" parent="ui/hbox/metalness" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 103.0
-margin_bottom = 14.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.498039 )
-custom_constants/shadow_offset_x = 0
-custom_constants/shadow_offset_y = 1
-text = "Metalness"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
-
-[node name="rect" type="TextureRect" parent="ui/hbox/metalness" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 18.0
-margin_right = 103.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = SubResource( 5 )
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
-
-[node name="emission" type="VBoxContainer" parent="ui/hbox" index="3"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 321.0
-margin_right = 427.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-alignment = 0
-_sections_unfolded = [ "Size Flags" ]
-
-[node name="label" type="Label" parent="ui/hbox/emission" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 106.0
-margin_bottom = 14.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.498039 )
-custom_constants/shadow_offset_x = 0
-custom_constants/shadow_offset_y = 1
-text = "Emission"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
-
-[node name="rect" type="TextureRect" parent="ui/hbox/emission" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 18.0
-margin_right = 106.0
-margin_bottom = 141.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = SubResource( 6 )
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
-
-[node name="cursor" type="Panel" parent="ui" index="2"]
-
+[node name="cursor" type="Panel" parent="ui" index="1"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -785,191 +481,12 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
-custom_styles/panel = SubResource( 7 )
+custom_styles/panel = SubResource( 3 )
 _sections_unfolded = [ "Anchor", "Material", "Mouse", "Rect", "Size Flags", "Visibility", "custom_styles" ]
-
-[node name="controls" type="Label" parent="ui" index="3"]
-
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -200.0
-margin_top = -220.0
-margin_right = 200.0
-margin_bottom = -10.0
-rect_min_size = Vector2( 400, 200 )
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.513333 )
-custom_constants/shadow_offset_x = 0
-custom_constants/shadow_offset_y = 1
-text = "WASD to rotate camera
-Left click to paint
-Right click to place decals
-Hold F and move mouse to change brush size
-Hold Shift+F and move mouse to change brush hardness
-1/2/3/4 to draw albedo/roughness/metalness/emission
-"
-align = 1
-valign = 2
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_constants" ]
-
-[node name="margin" type="MarginContainer" parent="ui" index="4"]
-
-anchor_left = 0.0
-anchor_top = 1.0
-anchor_right = 0.0
-anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = -497.0
-margin_right = 334.0
-margin_bottom = -20.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-_sections_unfolded = [ "Anchor", "Margin" ]
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="picker" type="ColorPicker" parent="ui/margin" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 8.0
-margin_right = 314.0
-margin_bottom = 477.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-alignment = 1
-color = Color( 1, 1, 1, 1 )
-edit_alpha = true
-raw_mode = false
-_sections_unfolded = [ "Anchor", "Hint", "Margin", "Rect" ]
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="brush_preview" type="VBoxContainer" parent="ui" index="5"]
-
-anchor_left = 1.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 0.0
-margin_left = -114.0
-margin_top = 20.0
-margin_right = -20.0
-margin_bottom = 152.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-alignment = 0
-_sections_unfolded = [ "Margin", "Size Flags" ]
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="label" type="Label" parent="ui/brush_preview" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 94.0
-margin_bottom = 14.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.498039 )
-custom_constants/shadow_offset_x = 0
-custom_constants/shadow_offset_y = 1
-text = "Brush"
-align = 1
-valign = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
-
-[node name="rect" type="TextureRect" parent="ui/brush_preview" index="1"]
-
-material = ExtResource( 7 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 18.0
-margin_right = 94.0
-margin_bottom = 112.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 6
-_sections_unfolded = [ "Anchor", "Margin", "Material", "Rect", "Size Flags" ]
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="softness_slider" type="HSlider" parent="ui/brush_preview" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 116.0
-margin_right = 94.0
-margin_bottom = 132.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 0
-min_value = 0.0
-max_value = 1.0
-step = 0.01
-page = 0.0
-value = 0.0
-exp_edit = false
-rounded = false
-editable = true
-tick_count = 4
-ticks_on_borders = true
-focus_mode = 2
 
 [node name="spatial" type="Node" parent="." index="2"]
 
 [node name="suz" type="MeshInstance" parent="spatial" index="0"]
-
 layers = 1
 material_override = null
 cast_shadow = 1
@@ -979,18 +496,16 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 8 )
+mesh = SubResource( 4 )
 skeleton = NodePath("..")
-material/0 = SubResource( 13 )
+material/0 = SubResource( 9 )
 _sections_unfolded = [ "Geometry", "Transform", "Visibility", "material" ]
 
 [node name="camroot" type="Spatial" parent="spatial" index="1"]
-
 transform = Transform( 0.191937, 0, 0.981358, 0, 1, 0, -0.981358, 0, 0.191937, 0, 0, 0 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="cam" type="Camera" parent="spatial/camroot" index="0"]
-
 transform = Transform( 0.304793, 0.0731269, -0.949708, 0, 0.997049, 0.0767721, 0.95252, -0.0233996, 0.303894, -3.807, 0.286159, 1.21515 )
 keep_aspect = 1
 cull_mask = 1048575
@@ -1007,7 +522,6 @@ far = 100.0
 _sections_unfolded = [ "Transform" ]
 
 [node name="light" type="DirectionalLight" parent="spatial" index="2"]
-
 transform = Transform( 1, 0, 0, 0, 0.173848, 0.984772, 0, -0.984772, 0.173848, 0, 0, 0 )
 layers = 1
 light_color = Color( 1, 1, 1, 1 )
@@ -1035,7 +549,3 @@ directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Light" ]
 
 [connection signal="gui_input" from="ui/button_paint" to="." method="_on_button_paint_gui_input"]
-
-[connection signal="value_changed" from="ui/brush_preview/softness_slider" to="." method="_on_softness_slider_value_changed"]
-
-
