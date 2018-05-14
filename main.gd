@@ -293,11 +293,11 @@ func _ready():
 	change_mesh(preload("res://assets/models/Suzanne.mesh"))	
 	
 	# For debugging so you can see this works...
-	#yield(get_tree().create_timer(2.0), "timeout")
-	#change_mesh(preload("res://assets/models/Torus.mesh"))
+	# yield(get_tree().create_timer(2.0), "timeout")
+	# change_mesh(preload("res://assets/models/Torus.mesh"))
 	
-	#yield(get_tree().create_timer(2.0), "timeout")
-	#change_mesh(preload("res://assets/models/Suzanne.mesh"))
+	# yield(get_tree().create_timer(2.0), "timeout")
+	# change_mesh(preload("res://assets/models/Suzanne.mesh"))
 
 func _on_softness_slider_value_changed(value):
 	

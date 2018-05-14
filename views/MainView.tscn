@@ -32,6 +32,7 @@ mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
+_sections_unfolded = [ "Material", "Visibility", "custom_styles" ]
 
 [node name="View" type="VSplitContainer" parent="." index="1"]
 anchor_left = 0.0
@@ -134,7 +135,7 @@ collapsed = false
 dragger_visibility = 0
 _sections_unfolded = [ "Anchor", "Hint", "Margin", "Rect", "Size Flags", "custom_constants" ]
 
-[node name="LeftPanel" type="VSplitContainer" parent="View/MainFrame" index="0"]
+[node name="LeftPanel" type="HSplitContainer" parent="View/MainFrame" index="0"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -153,12 +154,13 @@ dragger_visibility = 0
 _sections_unfolded = [ "Size Flags" ]
 
 [node name="ViewportContainer" type="ViewportContainer" parent="View/MainFrame/LeftPanel" index="0"]
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 1072.0
-margin_bottom = 822.0
+margin_right = 914.0
+margin_bottom = 930.0
 rect_min_size = Vector2( 500, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -172,7 +174,7 @@ _sections_unfolded = [ "Rect", "Size Flags" ]
 
 [node name="Viewport" type="Viewport" parent="View/MainFrame/LeftPanel/ViewportContainer" index="0"]
 arvr = false
-size = Vector2( 1072, 822 )
+size = Vector2( 914, 930 )
 own_world = false
 world = null
 transparent_bg = false
@@ -204,28 +206,28 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 830.0
+margin_left = 922.0
 margin_right = 1072.0
 margin_bottom = 930.0
-rect_min_size = Vector2( 0, 100 )
+rect_min_size = Vector2( 150, 0 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
-size_flags_vertical = 1
+size_flags_vertical = 3
 split_offset = 0
 collapsed = false
 dragger_visibility = 0
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="View/MainFrame/LeftPanel/BottomPanel" index="0"]
+[node name="HBoxContainer" type="VBoxContainer" parent="View/MainFrame/LeftPanel/BottomPanel" index="0"]
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 1072.0
-margin_bottom = 100.0
+margin_right = 150.0
+margin_bottom = 930.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -239,14 +241,14 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 265.0
-margin_bottom = 100.0
+margin_right = 150.0
+margin_bottom = 229.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
-size_flags_vertical = 1
+size_flags_vertical = 3
 alignment = 0
 _sections_unfolded = [ "Size Flags" ]
 
@@ -255,7 +257,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 265.0
+margin_right = 150.0
 margin_bottom = 22.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -280,8 +282,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 26.0
-margin_right = 265.0
-margin_bottom = 100.0
+margin_right = 150.0
+margin_bottom = 229.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -297,15 +299,15 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 269.0
-margin_right = 534.0
-margin_bottom = 100.0
+margin_top = 233.0
+margin_right = 150.0
+margin_bottom = 462.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
-size_flags_vertical = 1
+size_flags_vertical = 3
 alignment = 0
 _sections_unfolded = [ "Size Flags" ]
 
@@ -314,7 +316,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 265.0
+margin_right = 150.0
 margin_bottom = 22.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -339,8 +341,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 26.0
-margin_right = 265.0
-margin_bottom = 100.0
+margin_right = 150.0
+margin_bottom = 229.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -356,15 +358,15 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 538.0
-margin_right = 803.0
-margin_bottom = 100.0
+margin_top = 466.0
+margin_right = 150.0
+margin_bottom = 695.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
-size_flags_vertical = 1
+size_flags_vertical = 3
 alignment = 0
 _sections_unfolded = [ "Size Flags" ]
 
@@ -373,7 +375,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 265.0
+margin_right = 150.0
 margin_bottom = 22.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -398,8 +400,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 26.0
-margin_right = 265.0
-margin_bottom = 100.0
+margin_right = 150.0
+margin_bottom = 229.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -415,15 +417,15 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 807.0
-margin_right = 1072.0
-margin_bottom = 100.0
+margin_top = 699.0
+margin_right = 150.0
+margin_bottom = 930.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
-size_flags_vertical = 1
+size_flags_vertical = 3
 alignment = 0
 _sections_unfolded = [ "Size Flags" ]
 
@@ -432,7 +434,7 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 265.0
+margin_right = 150.0
 margin_bottom = 22.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
@@ -457,8 +459,8 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 26.0
-margin_right = 265.0
-margin_bottom = 100.0
+margin_right = 150.0
+margin_bottom = 231.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -490,7 +492,6 @@ dragger_visibility = 0
 _sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
 
 [node name="Brush" type="VBoxContainer" parent="View/MainFrame/RightPanel" index="0"]
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -508,7 +509,6 @@ alignment = 0
 _sections_unfolded = [ "Rect" ]
 
 [node name="Preview" type="VBoxContainer" parent="View/MainFrame/RightPanel/Brush" index="0"]
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -689,6 +689,7 @@ lines_skipped = 0
 max_lines_visible = -1
 
 [connection signal="active_texture_changed" from="View/MainFrame/LeftPanel/ViewportContainer/Viewport/main" to="." method="_on_main_active_texture_changed"]
+[connection signal="value_changed" from="View/MainFrame/RightPanel/Brush/Preview/softness_slider" to="." method="_on_softness_slider_value_changed"]
 [connection signal="button_down" from="View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_button_down"]
 [connection signal="color_changed" from="View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
 [connection signal="popup_closed" from="View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_popup_closed"]

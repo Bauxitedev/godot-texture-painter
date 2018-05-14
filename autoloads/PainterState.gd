@@ -4,7 +4,8 @@ var brush = {
 	"softness_slider": null,
 	"size": 4,
 	
-	"color": Color(1.0, 1.0, 1.0, 1.0)
+	"color": Color(1.0, 1.0, 1.0, 1.0),
+	"hardness": 0
 }
 
 var viewports = {

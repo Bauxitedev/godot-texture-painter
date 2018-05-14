@@ -37,3 +37,12 @@ func _on_main_active_texture_changed(idx):
 	for i in range(4):
 		var color = Color(1,0.3,0) if i == idx else Color(1.0, 1.0, 1.0)
 		previews.get_children()[i].get_node("label").add_color_override("font_color", color)
+
+
+func _on_softness_slider_value_changed(value):
+	PainterState.brush.hardness = value
+	
+	$View/MainFrame/RightPanel/Brush/Preview/rect
+	var gradient = $View/MainFrame/RightPanel/Brush/Preview/rect.material.get_shader_param("brush_gradient").gradient
+	
+	gradient.set_offset(0, value * (1 - 1e-3))
