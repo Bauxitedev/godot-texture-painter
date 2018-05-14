@@ -503,7 +503,6 @@ _sections_unfolded = [ "Focus", "Mouse", "Size Flags", "Textures" ]
 
 [node name="hbox" type="HBoxContainer" parent="ui" index="1"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -523,7 +522,6 @@ _sections_unfolded = [ "Margin", "Size Flags", "Theme", "custom_constants" ]
 
 [node name="albedo" type="VBoxContainer" parent="ui/hbox" index="0"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -586,7 +584,6 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
 
 [node name="roughness" type="VBoxContainer" parent="ui/hbox" index="1"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -650,7 +647,6 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
 
 [node name="metalness" type="VBoxContainer" parent="ui/hbox" index="2"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -714,7 +710,6 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect", "Size Flags" ]
 
 [node name="emission" type="VBoxContainer" parent="ui/hbox" index="3"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -816,7 +811,8 @@ custom_constants/shadow_offset_y = 1
 text = "WASD to rotate camera
 Left click to paint
 Right click to place decals
-Scroll to change brush size
+Hold F and move mouse to change brush size
+Hold Shift+F and move mouse to change brush hardness
 1/2/3/4 to draw albedo/roughness/metalness/emission
 "
 align = 1
@@ -828,7 +824,6 @@ _sections_unfolded = [ "Anchor", "Margin", "Rect", "custom_colors", "custom_cons
 
 [node name="margin" type="MarginContainer" parent="ui" index="4"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 0.0
@@ -874,7 +869,6 @@ __meta__ = {
 
 [node name="brush_preview" type="VBoxContainer" parent="ui" index="5"]
 
-editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -891,6 +885,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 1
 alignment = 0
 _sections_unfolded = [ "Margin", "Size Flags" ]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="label" type="Label" parent="ui/brush_preview" index="0"]
 
@@ -916,9 +913,6 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_colors", "custom_constants", "custom_fonts", "custom_styles" ]
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="rect" type="TextureRect" parent="ui/brush_preview" index="1"]
 
