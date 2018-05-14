@@ -2,6 +2,7 @@ extends Control
 
 func _ready():
 	PainterState.brush.softness_slider = $View/MainFrame/RightPanel/Brush/Preview/softness_slider
+	PainterState.brush.color_picker = $View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton
 	
 	PainterState.viewports.albedo = $View/MainFrame/LeftPanel/ViewportContainer/Viewport/main/textures/paint/albedo
 	PainterState.viewports.roughness = $View/MainFrame/LeftPanel/ViewportContainer/Viewport/main/textures/paint/roughness
@@ -17,6 +18,9 @@ func _ready():
 	roughness_rect.texture = PainterState.viewports.roughness.get_texture()
 	metalness_rect.texture = PainterState.viewports.metalness.get_texture()
 	emission_rect.texture = PainterState.viewports.emission.get_texture()
+	
+	# workaround for https://github.com/godotengine/godot/pull/18161
+	$View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton.get_popup().connect("modal_closed", self, "_on_ColorPickerButton_popup_closed")
 
 
 func _on_ColorPickerButton_popup_closed():

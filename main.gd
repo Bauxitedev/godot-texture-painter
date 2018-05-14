@@ -21,6 +21,7 @@ enum States {
 	Rotate,
 	Zoom,
 	Pan,
+	ColorPick,
 }
 
 class BrushSoftnessChangeState extends InputHandlerState:
@@ -147,15 +148,18 @@ class PaintState extends InputHandlerState:
 			
 			if changed_texture:
 				parent.emit_signal("active_texture_changed", parent.textures.current_slot)
-				
+	
+	func update(parent, delta):
+		
+		if Input.is_action_just_pressed("open_color_picker"):
+			parent.state = parent.state_classes[parent.ColorPick].new(parent)
 		
 		if Input.is_action_pressed("paint_resize_brush"):
 			parent.state = parent.state_classes[parent.BrushResize].new(parent)
 		
 		if Input.is_action_pressed("paint_change_brush_softness"):
 			parent.state = parent.state_classes[parent.BrushSoftnessChange].new(parent)
-	
-	func update(parent, delta):
+		
 		# Cam controls
 		var cam = parent.get_node("spatial/camroot/cam")
 		parent.rotate_cam(cam, delta)
@@ -259,6 +263,39 @@ class PanState extends InputHandlerState:
 	func update(parent, event):
 		pass
 
+class ColorPickState extends InputHandlerState:
+	
+	var color_picker
+	var initial_mouse_position
+	
+	func _init(parent):
+		parent.get_node("ui/cursor").visible = false
+		
+		initial_mouse_position = parent.get_viewport().get_mouse_position()
+		
+		color_picker = parent.get_node("ui/ColorPicker")
+		color_picker.rect_position = initial_mouse_position - color_picker.rect_size / 2
+		color_picker.color = PainterState.brush.color
+		color_picker.show()
+		
+		pass
+	
+	func handle_input(parent, event):
+		pass
+	
+	func update(parent, event):
+		
+		if Input.is_action_just_pressed("open_color_picker"):
+			color_picker.hide()
+			parent.get_node("ui/cursor").visible = true
+			parent.state = parent.state_classes[parent.Paint].new()
+			Input.warp_mouse_position(initial_mouse_position)
+			return
+		
+		PainterState.brush.color = color_picker.color
+		PainterState.brush.color_picker.color = color_picker.color
+		pass
+
 func rotate_cam(cam, delta):
 	var rotspeed = 2
 	if Input.is_action_pressed("ui_up"):
@@ -280,6 +317,7 @@ var state_classes = {
 	Rotate: RotateState,
 	Zoom: ZoomState,
 	Pan: PanState,
+	ColorPick: ColorPickState,
 }
 
 func _process(delta):

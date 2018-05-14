@@ -5,6 +5,7 @@ var brush = {
 	"size": 4,
 	
 	"color": Color(1.0, 1.0, 1.0, 1.0),
+	"color_picker": null,
 	"hardness": 0
 }
 
