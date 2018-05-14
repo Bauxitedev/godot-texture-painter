@@ -16,13 +16,16 @@ enum States {
 	Paint,
 	BrushResize,
 	BrushSoftnessChange,
+	Rotate,
+	Zoom,
+	Pan,
 }
 
 class BrushSoftnessChangeState extends InputHandlerState:
 	
+	var initial_mouse_position = Vector2()
 	var middle_position = Vector2()
 	var initial_softness = 0
-	var new_softness
 	var offset = 0
 	
 	var length_of_slider = 0
@@ -36,11 +39,14 @@ class BrushSoftnessChangeState extends InputHandlerState:
 		
 		offset = initial_softness * length_of_slider
 		
+		initial_mouse_position = vp.get_mouse_position()
+		
 		middle_position = vp.get_mouse_position()
 		middle_position.x -= offset
 	
 	func handle_input(parent, event):
 		if !Input.is_action_pressed("paint_change_brush_softness"):
+			Input.warp_mouse_position(initial_mouse_position)
 			parent.state = parent.state_classes[parent.Paint].new()
 		
 		if event is InputEventMouseMotion:
@@ -49,6 +55,7 @@ class BrushSoftnessChangeState extends InputHandlerState:
 	
 	func update(parent, delta):
 		if !Input.is_action_pressed("paint_change_brush_softness"):
+			Input.warp_mouse_position(initial_mouse_position)
 			parent.state = parent.state_classes[parent.Paint].new()
 		
 		# Set cursor size/pos
@@ -60,6 +67,7 @@ class BrushSoftnessChangeState extends InputHandlerState:
 
 class BrushResizeState extends InputHandlerState:
 	
+	var initial_mouse_position = Vector2()
 	var middle_position = Vector2()
 	var initial_size = 0
 	
@@ -68,6 +76,7 @@ class BrushResizeState extends InputHandlerState:
 	func _init(parent):
 		var vp = parent.get_viewport()
 		middle_position = vp.get_mouse_position()
+		initial_mouse_position = vp.get_mouse_position()
 		
 		offset = vp.size.y / parent.size / 4
 		
@@ -76,6 +85,7 @@ class BrushResizeState extends InputHandlerState:
 	
 	func handle_input(parent, event):
 		if !Input.is_action_pressed("paint_resize_brush"):
+			Input.warp_mouse_position(initial_mouse_position)
 			parent.state = parent.state_classes[parent.Paint].new()
 		
 		if event is InputEventMouseMotion:
@@ -87,6 +97,7 @@ class BrushResizeState extends InputHandlerState:
 	
 	func update(parent, delta):
 		if !Input.is_action_pressed("paint_resize_brush"):
+			Input.warp_mouse_position(initial_mouse_position)
 			parent.state = parent.state_classes[parent.Paint].new()
 		
 		# Set cursor size/pos
@@ -100,12 +111,18 @@ class PaintState extends InputHandlerState:
 	
 	func handle_input(parent, ev):
 		if ev is InputEventMouseButton:
-		
-			if ev.button_index == BUTTON_WHEEL_UP:
-				parent.size /= 1.1
+			
+			if Input.is_mouse_button_pressed(BUTTON_MIDDLE) and Input.is_key_pressed(KEY_SHIFT):
+				parent.state = parent.state_classes[parent.Pan].new(parent)
 				return
-			if ev.button_index == BUTTON_WHEEL_DOWN:
-				parent.size *= 1.1
+			
+			if ev.button_index == BUTTON_MIDDLE:
+				parent.state = parent.state_classes[parent.Rotate].new(parent)
+				return
+		
+			if ev.button_index == BUTTON_WHEEL_UP or ev.button_index == BUTTON_WHEEL_DOWN:
+				parent.state = parent.state_classes[parent.Zoom].new(parent)
+				parent.state.handle_input(parent, ev) # we don't want to waste that.
 				return
 				
 			if ev.pressed:
@@ -131,7 +148,7 @@ class PaintState extends InputHandlerState:
 			parent.state = parent.state_classes[parent.BrushSoftnessChange].new(parent)
 	
 	func update(parent, delta):
-			# Cam controls
+		# Cam controls
 		var cam = parent.get_node("spatial/camroot/cam")
 		parent.rotate_cam(cam, delta)
 		
@@ -156,6 +173,84 @@ class PaintState extends InputHandlerState:
 		# Update paint shaders
 		parent.textures.update_shaders(mouse_pos, parent.size, cam, parent.get_node("ui/margin/picker").color)
 
+class RotateState extends InputHandlerState:
+	func _init(parent):
+		parent.get_node("ui/cursor").visible = false
+	
+	func handle_input(parent, event):
+		
+		if !Input.is_mouse_button_pressed(BUTTON_MIDDLE):
+			parent.get_node("ui/cursor").visible = true
+			parent.state = parent.state_classes[parent.Paint].new()
+			return
+		
+		if !(event is InputEventMouseMotion):
+			return
+		
+		var relative = event.relative
+		
+		var camroot = parent.get_node("spatial/camroot")
+		var cam = parent.get_node("spatial/camroot/cam")
+		
+		camroot.rotate(cam.global_transform.basis.x.normalized(), -relative.y / 250)
+		camroot.rotate(Vector3(0, 1, 0), -relative.x / 250)
+	
+	func update(parent, delta):
+		pass
+
+class ZoomState extends InputHandlerState:
+	func _init(parent):
+		parent.get_node("ui/cursor").visible = false
+		pass
+	
+	func handle_input(parent, event):
+		
+		var direction
+		
+		if Input.is_mouse_button_pressed(BUTTON_WHEEL_UP):
+			direction = -1.0
+		elif Input.is_mouse_button_pressed(BUTTON_WHEEL_DOWN):
+			direction = 1.0
+		else:
+			parent.get_node("ui/cursor").visible = true
+			parent.state = parent.state_classes[parent.Paint].new()
+			return
+
+		var cam = parent.get_node("spatial/camroot/cam")
+		
+		var factor = 0.3
+		
+		cam.translate(Vector3(0, 0, 1) * factor * direction)
+	
+	func update(parent, event):
+		pass
+
+class PanState extends InputHandlerState:
+	func _init(parent):
+		parent.get_node("ui/cursor").visible = false
+		pass
+	
+	func handle_input(parent, event):
+		
+		if !(Input.is_mouse_button_pressed(BUTTON_MIDDLE) and Input.is_key_pressed(KEY_SHIFT)):
+			parent.get_node("ui/cursor").visible = true
+			parent.state = parent.state_classes[parent.Paint].new()
+			return
+		
+		if !(event is InputEventMouseMotion):
+			return
+
+		var relative = event.relative
+		
+		var camroot = parent.get_node("spatial/camroot")
+		var cam = parent.get_node("spatial/camroot/cam")
+		
+		camroot.translate(Vector3(0, 0, 1) * -relative.x / 500)
+		camroot.translate(Vector3(0, 1, 0) * relative.y / 500)
+	
+	func update(parent, event):
+		pass
+
 func rotate_cam(cam, delta):
 	var rotspeed = 2
 	if Input.is_action_pressed("ui_up"):
@@ -173,7 +268,10 @@ var state = PaintState.new()
 var state_classes = {
 	Paint: PaintState,
 	BrushResize: BrushResizeState,
-	BrushSoftnessChange: BrushSoftnessChangeState
+	BrushSoftnessChange: BrushSoftnessChangeState,
+	Rotate: RotateState,
+	Zoom: ZoomState,
+	Pan: PanState,
 }
 
 func _process(delta):
