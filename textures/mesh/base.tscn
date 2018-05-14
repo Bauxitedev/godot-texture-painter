@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://textures/mesh/base.gd" type="Script" id=1]
-[ext_resource path="res://assets/models/Suzanne.mesh" type="ArrayMesh" id=2]
+[ext_resource path="res://assets/models/Torus.mesh" type="ArrayMesh" id=2]
 [ext_resource path="res://textures/mesh/draw.gd" type="Script" id=3]
 
-[node name="base" type="Viewport"]
+[node name="base" type="Viewport" index="0"]
 
 arvr = false
 size = Vector2( 2048, 2048 )
@@ -30,11 +30,12 @@ shadow_atlas_quad_1 = 2
 shadow_atlas_quad_2 = 3
 shadow_atlas_quad_3 = 4
 script = ExtResource( 1 )
-_sections_unfolded = [ "Render Target" ]
+_sections_unfolded = [ "Render Target", "Rendering" ]
 mesh = ExtResource( 2 )
 
 [node name="draw" type="Node2D" parent="." index="0"]
 
 script = ExtResource( 3 )
+_sections_unfolded = [ "Visibility" ]
 
 

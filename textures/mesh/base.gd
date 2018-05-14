@@ -9,9 +9,12 @@ export(Mesh) var mesh
 
 var tris = []
 
-func _ready():
+# Called whenever the mesh changes
+func regenerate_mesh_texture():
 	var datatool = MeshDataTool.new()
 	datatool.create_from_surface(mesh, 0)
+	
+	tris = []
 	
 	for t in datatool.get_face_count():
 		
@@ -27,8 +30,18 @@ func _ready():
 		
 		tris.push_back([[uv1, uv2, uv3], triangle_data])
 		
-# override this method to return position/normal/tangent/vertex color/etc
-func _get_triangle_data(datatool, p1i, p2i, p3i):
+	# Trigger a single refresh of the viewport so the triangles get drawn
+	# For some reason you need to wait 2 frames before it actually works
+	render_target_update_mode = Viewport.UPDATE_ALWAYS
+	$draw.update()	
+	yield(get_tree(), "idle_frame")
+	yield(get_tree(), "idle_frame")
+	render_target_update_mode = Viewport.UPDATE_DISABLED
 	
+func _ready():
+	regenerate_mesh_texture()
+	
+# Override this method to return position/normal/tangent/vertex color/etc
+func _get_triangle_data(datatool, p1i, p2i, p3i):
 	pass
 

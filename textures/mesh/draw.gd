@@ -1,9 +1,6 @@
 
 extends Node2D
 
-func _ready():
-	update() # NOTE: actually needed to set viewport update mode to Once
-
 	
 func _draw():
 	
