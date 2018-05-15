@@ -103,7 +103,7 @@ void fragment()
 			COLOR = color * brush_value * vec4(vec3(1.0), multiplier);
 		}
 		else //Paint decal texture
-			COLOR = normal_mutliplier * tex_albedo * color;
+			COLOR = vec4(vec3(1.0), normal_mutliplier) * tex_albedo * color;
 	}
 
 }
