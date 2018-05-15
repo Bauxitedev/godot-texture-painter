@@ -4,13 +4,12 @@ onready var state_machine = $".."
 
 onready var cam = $"../../spatial/camroot/cam"
 onready var camroot = $"../../spatial/camroot"
-onready var cursor = $"../../ui/cursor"
 
 func on_init():
-	cursor.visible = false
+	PainterState.paint_viewport.cursor_node.visible = false
 
 func on_finalize():
-	cursor.visible = true
+	PainterState.paint_viewport.cursor_node.visible = true
 
 func update(delta):
 	pass

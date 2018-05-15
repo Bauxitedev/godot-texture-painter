@@ -8,7 +8,6 @@ var length_of_slider = 0
 
 onready var state_machine = $".."
 onready var vp = get_viewport()
-onready var cursor = $"../../ui/cursor"
 
 func on_init():
 
@@ -34,8 +33,8 @@ func update(delta):
 	
 	# Set cursor size/pos
 	var rect_size = Vector2(length_of_slider, length_of_slider) * 2
-	cursor.rect_size = rect_size
-	cursor.rect_position = middle_position - rect_size / 2
+	PainterState.paint_viewport.cursor_node.rect_size = rect_size
+	PainterState.paint_viewport.cursor_node.rect_position = middle_position - rect_size / 2
 
 func handle_input(event):
 	if !Input.is_action_pressed("paint_change_brush_softness"):

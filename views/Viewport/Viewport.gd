@@ -6,7 +6,7 @@ onready var state_machine = $InputStates
 func _process(delta):
 	state_machine.update(delta)
 
-func _on_button_paint_gui_input(ev):
+func _on_ViewportUI_gui_input(ev):
 	state_machine.handle_input(ev)
 
 func _ready():
@@ -15,7 +15,7 @@ func _ready():
 	
 	state_machine.switch_state("Paint")
 	
-	change_mesh(preload("res://assets/models/Suzanne.mesh"))	
+	change_mesh(preload("res://assets/models/Suzanne.mesh"))
 	
 	# For debugging so you can see this works...
 	# yield(get_tree().create_timer(2.0), "timeout")
@@ -46,3 +46,4 @@ func change_mesh(mesh):
 	for vp in $textures/mesh.get_children():
 		vp.mesh = mesh
 		vp.regenerate_mesh_texture()
+

@@ -4,7 +4,6 @@ onready var state_machine = $".."
 
 onready var cam = $"../../spatial/camroot/cam"
 onready var camroot = $"../../spatial/camroot"
-onready var cursor = $"../../ui/cursor"
 
 func on_init():
 	pass
@@ -13,6 +12,19 @@ func on_finalize():
 	pass
 
 func update(delta):
+	
+	# switch textures
+	
+	var new_active_texture = -1
+	
+	if Input.is_key_pressed(KEY_1): new_active_texture = 0
+	if Input.is_key_pressed(KEY_2): new_active_texture = 1
+	if Input.is_key_pressed(KEY_3): new_active_texture = 2
+	if Input.is_key_pressed(KEY_4): new_active_texture = 3
+		
+	if new_active_texture != -1:
+		PainterState.set_active_texture(new_active_texture)
+	
 	if Input.is_action_just_pressed("open_color_picker"):
 		state_machine.switch_state("ColorPick")
 		return
@@ -42,8 +54,8 @@ func update(delta):
 	
 	# Set cursor size/pos
 	var rect_size = Vector2(vp.size.y / PainterState.brush.size, vp.size.y / PainterState.brush.size) / 2
-	cursor.rect_size = rect_size
-	cursor.rect_position = get_viewport().get_mouse_position() - rect_size / 2
+	PainterState.paint_viewport.cursor_node.rect_size = rect_size
+	PainterState.paint_viewport.cursor_node.rect_position = get_viewport().get_mouse_position() - rect_size / 2
 	
 	# Update paint shaders
 	PainterState.textures_node.update_shaders(mouse_pos, PainterState.brush.size, cam, PainterState.brush.color)
@@ -68,20 +80,6 @@ func handle_input(event):
 			PainterState.textures_node.should_paint_decal = event.button_index == BUTTON_RIGHT
 		else:
 			PainterState.textures_node.should_paint = false
-			
-	
-	if event is InputEventKey and event.pressed:
-		
-		var new_active_texture = -1
-		
-		match event.scancode:
-			KEY_1: new_active_texture = 0
-			KEY_2: new_active_texture = 1
-			KEY_3: new_active_texture = 2
-			KEY_4: new_active_texture = 3
-		
-		if new_active_texture != -1:
-			PainterState.set_active_texture(new_active_texture)
 
 
 func rotate_cam(delta):

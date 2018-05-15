@@ -3,10 +3,8 @@ extends Node
 onready var state_machine = $".."
 
 onready var cam = $"../../spatial/camroot/cam"
-onready var cursor = $"../../ui/cursor"
 
 func on_init():
-	cursor.visible = false
 	
 	var direction
 	if Input.is_mouse_button_pressed(BUTTON_WHEEL_UP):
@@ -21,7 +19,7 @@ func on_init():
 	state_machine.switch_state("Paint")
 
 func on_finalize():
-	cursor.visible = true
+	pass
 
 func update(delta):
 	pass

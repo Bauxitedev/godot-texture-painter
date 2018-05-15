@@ -26,6 +26,11 @@ enum TextureType {
 	Emission,
 }
 
+var paint_viewport = {
+	"cursor_node": null,
+	"colorpicker_node": null,
+}
+
 var textures_node = null
 
 var active_texture = 0

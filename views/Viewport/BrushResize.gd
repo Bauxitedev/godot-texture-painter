@@ -7,8 +7,6 @@ var offset = 0
 
 onready var state_machine = $".."
 
-onready var cursor = $"../../ui/cursor"
-
 func on_init():
 	middle_position = get_viewport().get_mouse_position()
 	initial_mouse_position = get_tree().root.get_mouse_position()
@@ -30,8 +28,8 @@ func update(delta):
 	# Set cursor size/pos
 	var vp = get_viewport()
 	var rect_size = Vector2(vp.size.y / PainterState.brush.size, vp.size.y / PainterState.brush.size) / 2
-	cursor.rect_size = rect_size
-	cursor.rect_position = middle_position - rect_size / 2
+	PainterState.paint_viewport.cursor_node.rect_size = rect_size
+	PainterState.paint_viewport.cursor_node.rect_position = middle_position - rect_size / 2
 
 func handle_input(event):
 	if !Input.is_action_pressed("paint_resize_brush"):
