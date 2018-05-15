@@ -6,7 +6,7 @@
 [ext_resource path="res://assets/shaders/brush_preview_shader.tres" type="Material" id=4]
 [ext_resource path="res://assets/textures/logo.svg" type="Texture" id=5]
 
-[node name="MainView" type="Control"]
+[node name="MainView" type="Control" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -55,7 +55,6 @@ _sections_unfolded = [ "custom_constants" ]
 
 [node name="MenuBar" type="HBoxContainer" parent="View" index="0"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -94,7 +93,7 @@ group = null
 text = "File"
 flat = true
 align = 1
-items = [ "Quit", null, false, false, false, -1, 0, null, "", false ]
+items = [ "Load mesh...", null, false, false, false, -1, 0, null, "", false, "Quit", null, false, false, false, -1, 0, null, "", false ]
 _sections_unfolded = [ "Size Flags", "Theme" ]
 
 [node name="OptionsMenu" type="MenuButton" parent="View/MenuBar" index="1"]
@@ -121,6 +120,7 @@ text = "Options"
 flat = true
 align = 1
 items = [  ]
+_sections_unfolded = [ "Mouse" ]
 
 [node name="MainFrame" type="HSplitContainer" parent="View" index="1"]
 
@@ -140,7 +140,7 @@ size_flags_vertical = 1
 split_offset = 0
 collapsed = false
 dragger_visibility = 0
-_sections_unfolded = [ "Anchor", "Hint", "Margin", "Rect", "Size Flags", "custom_constants" ]
+_sections_unfolded = [ "Anchor", "Hint", "Margin", "Mouse", "Rect", "Size Flags", "custom_constants" ]
 
 [node name="LeftPanel" type="HSplitContainer" parent="View/MainFrame" index="0"]
 
@@ -159,7 +159,7 @@ size_flags_vertical = 1
 split_offset = 0
 collapsed = false
 dragger_visibility = 0
-_sections_unfolded = [ "Size Flags" ]
+_sections_unfolded = [ "Mouse", "Size Flags", "Theme" ]
 
 [node name="ViewportContainer" type="ViewportContainer" parent="View/MainFrame/LeftPanel" index="0"]
 
@@ -178,7 +178,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
 stretch_shrink = 1
-_sections_unfolded = [ "Rect", "Size Flags" ]
+_sections_unfolded = [ "Mouse", "Rect", "Size Flags" ]
 
 [node name="Viewport" type="Viewport" parent="View/MainFrame/LeftPanel/ViewportContainer" index="0"]
 

@@ -18,7 +18,7 @@ func _ready():
 	roughness_rect.texture = PainterState.viewports.roughness.get_texture()
 	metalness_rect.texture = PainterState.viewports.metalness.get_texture()
 	emission_rect.texture = PainterState.viewports.emission.get_texture()
-	
+		
 	# workaround for https://github.com/godotengine/godot/pull/18161
 	$View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton.get_popup().connect("modal_closed", self, "_on_ColorPickerButton_popup_closed")
 
@@ -26,13 +26,35 @@ func _ready():
 	_on_active_texture_changed(0)
 	
 	PainterState.connect("active_texture_changed", self, "_on_active_texture_changed")
+	
+	# Setup the menu bar signals
+	$View/MenuBar/FileMenu.connect("about_to_show", self, "_on_filemenu_about_to_show")
+	$View/MenuBar/FileMenu.get_popup().connect("index_pressed", self, "_on_filemenu_index_pressed")
+	$View/MenuBar/FileMenu.get_popup().connect("popup_hide", self, "_on_filemenu_hidden")
 
+func _on_filemenu_about_to_show():
+	# Hack to prevent the viewport stealing input
+	$View/MainFrame/LeftPanel/ViewportContainer/Viewport.gui_disable_input = true
+
+func _on_filemenu_hidden():
+	# Hack to prevent the viewport stealing input	
+	$View/MainFrame/LeftPanel/ViewportContainer/Viewport.gui_disable_input = false
+	
+	
+func _on_filemenu_index_pressed(index):
+	match index:
+		# TODO show a FileDialog here
+		0: $View/MainFrame/LeftPanel/ViewportContainer/Viewport/main.change_mesh(preload("res://assets/models/Torus.mesh"))
+		1: get_tree().quit()
+		
 
 func _on_ColorPickerButton_popup_closed():
+	# Hack to prevent the viewport stealing input	
 	$View/MainFrame/LeftPanel/ViewportContainer/Viewport.gui_disable_input = false
 
 
 func _on_ColorPickerButton_button_down():
+	# Hack to prevent the viewport stealing input	
 	$View/MainFrame/LeftPanel/ViewportContainer/Viewport.gui_disable_input = true
 
 
