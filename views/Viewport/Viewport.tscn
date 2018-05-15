@@ -1,11 +1,19 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=24 format=2]
 
-[ext_resource path="res://main.gd" type="Script" id=1]
+[ext_resource path="res://views/Viewport/Viewport.gd" type="Script" id=1]
 [ext_resource path="res://textures/textures.gd" type="Script" id=2]
 [ext_resource path="res://assets/shaders/paint_shader.tres" type="Material" id=3]
 [ext_resource path="res://textures/mesh/base.tscn" type="PackedScene" id=4]
 [ext_resource path="res://textures/mesh/position.gd" type="Script" id=5]
 [ext_resource path="res://textures/mesh/normal.gd" type="Script" id=6]
+[ext_resource path="res://views/Viewport/InputStates.gd" type="Script" id=7]
+[ext_resource path="res://views/Viewport/Paint.gd" type="Script" id=8]
+[ext_resource path="res://views/Viewport/Rotate.gd" type="Script" id=9]
+[ext_resource path="res://views/Viewport/Zoom.gd" type="Script" id=10]
+[ext_resource path="res://views/Viewport/Pan.gd" type="Script" id=11]
+[ext_resource path="res://views/Viewport/BrushResize.gd" type="Script" id=12]
+[ext_resource path="res://views/Viewport/BrushSoftnessChange.gd" type="Script" id=13]
+[ext_resource path="res://views/Viewport/ColorPick.gd" type="Script" id=14]
 
 [sub_resource type="ProceduralSky" id=1]
 
@@ -240,13 +248,14 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission", "Flags", "Metallic", "Parameters", "Resource", "Roughness", "Vertex Color" ]
 
-[node name="main" type="WorldEnvironment"]
+[node name="main" type="WorldEnvironment" index="0"]
 
 environment = SubResource( 2 )
 script = ExtResource( 1 )
 
 [node name="textures" type="Node" parent="." index="0"]
 
+editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="paint" type="Node" parent="textures" index="0"]
@@ -445,7 +454,39 @@ script = ExtResource( 5 )
 
 script = ExtResource( 6 )
 
-[node name="ui" type="CanvasLayer" parent="." index="1"]
+[node name="InputStates" type="Node" parent="." index="1"]
+
+script = ExtResource( 7 )
+
+[node name="Paint" type="Node" parent="InputStates" index="0"]
+
+script = ExtResource( 8 )
+
+[node name="Rotate" type="Node" parent="InputStates" index="1"]
+
+script = ExtResource( 9 )
+
+[node name="Zoom" type="Node" parent="InputStates" index="2"]
+
+script = ExtResource( 10 )
+
+[node name="Pan" type="Node" parent="InputStates" index="3"]
+
+script = ExtResource( 11 )
+
+[node name="BrushResize" type="Node" parent="InputStates" index="4"]
+
+script = ExtResource( 12 )
+
+[node name="BrushSoftnessChange" type="Node" parent="InputStates" index="5"]
+
+script = ExtResource( 13 )
+
+[node name="ColorPick" type="Node" parent="InputStates" index="6"]
+
+script = ExtResource( 14 )
+
+[node name="ui" type="CanvasLayer" parent="." index="2"]
 
 layer = 1
 offset = Vector2( 0, 0 )
@@ -501,8 +542,8 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 4.0
 margin_top = 4.0
-margin_right = 302.0
-margin_bottom = 462.0
+margin_right = 4.0
+margin_bottom = 4.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 1
@@ -515,7 +556,7 @@ edit_alpha = true
 raw_mode = false
 _sections_unfolded = [ "Rect" ]
 
-[node name="spatial" type="Node" parent="." index="2"]
+[node name="spatial" type="Node" parent="." index="3"]
 
 [node name="suz" type="MeshInstance" parent="spatial" index="0"]
 
@@ -535,12 +576,12 @@ _sections_unfolded = [ "Geometry", "Transform", "Visibility", "material" ]
 
 [node name="camroot" type="Spatial" parent="spatial" index="1"]
 
-transform = Transform( 0.191937, 0, 0.981358, 0, 1, 0, -0.981358, 0, 0.191937, 0, 0, 0 )
+transform = Transform( -2.8213e-07, 0, 1, 0, 1, 0, -1, 0, -2.8213e-07, 0, 0, 0 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="cam" type="Camera" parent="spatial/camroot" index="0"]
 
-transform = Transform( 0.304793, 0.0731269, -0.949708, 0, 0.997049, 0.0767721, 0.95252, -0.0233996, 0.303894, -3.807, 0.286159, 1.21515 )
+transform = Transform( -1.62936e-07, 0, -1.0001, 0, 1, 0, 1.0001, 0, -1.62936e-07, -4, 0, 0 )
 keep_aspect = 1
 cull_mask = 1048575
 environment = null

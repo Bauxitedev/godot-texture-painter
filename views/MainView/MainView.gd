@@ -23,7 +23,9 @@ func _ready():
 	$View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton.get_popup().connect("modal_closed", self, "_on_ColorPickerButton_popup_closed")
 
 	# little hack
-	_on_main_active_texture_changed(0)
+	_on_active_texture_changed(0)
+	
+	PainterState.connect("active_texture_changed", self, "_on_active_texture_changed")
 
 
 func _on_ColorPickerButton_popup_closed():
@@ -38,7 +40,7 @@ func _on_ColorPickerButton_color_changed(color):
 	PainterState.brush.color = color
 
 
-func _on_main_active_texture_changed(idx):
+func _on_active_texture_changed(idx):
 	var previews = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer
 	
 	for i in range(4):

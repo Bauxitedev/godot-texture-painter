@@ -1,12 +1,12 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/themes/default_theme.tres" type="Theme" id=1]
-[ext_resource path="res://views/MainView.gd" type="Script" id=2]
-[ext_resource path="res://main.tscn" type="PackedScene" id=3]
+[ext_resource path="res://views/MainView/MainView.gd" type="Script" id=2]
+[ext_resource path="res://views/Viewport/Viewport.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/shaders/brush_preview_shader.tres" type="Material" id=4]
 [ext_resource path="res://assets/textures/logo.svg" type="Texture" id=5]
 
-[node name="MainView" type="Control" index="0"]
+[node name="MainView" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -163,7 +163,6 @@ _sections_unfolded = [ "Size Flags" ]
 
 [node name="ViewportContainer" type="ViewportContainer" parent="View/MainFrame/LeftPanel" index="0"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -721,8 +720,6 @@ text = "Layers"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-
-[connection signal="active_texture_changed" from="View/MainFrame/LeftPanel/ViewportContainer/Viewport/main" to="." method="_on_main_active_texture_changed"]
 
 [connection signal="value_changed" from="View/MainFrame/RightPanel/Brush/Preview/softness_slider" to="." method="_on_softness_slider_value_changed"]
 
