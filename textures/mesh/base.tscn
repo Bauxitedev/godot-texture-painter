@@ -1,22 +1,15 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://textures/mesh/base.gd" type="Script" id=1]
 [ext_resource path="res://assets/models/Torus.mesh" type="ArrayMesh" id=2]
 [ext_resource path="res://textures/mesh/draw.gd" type="Script" id=3]
 [ext_resource path="res://assets/shaders/seamfixer_shader.shader" type="Shader" id=4]
 
-[sub_resource type="ViewportTexture" id=2]
-
-resource_local_to_scene = true
-flags = 0
-viewport_path = NodePath(".")
-
-[sub_resource type="ShaderMaterial" id=1]
+[sub_resource type="ShaderMaterial" id=2]
 
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource( 4 )
-shader_param/meshtex_pos = SubResource( 2 )
 _sections_unfolded = [ "Resource", "shader_param" ]
 
 [node name="base" type="Viewport" index="0"]
@@ -55,7 +48,7 @@ _sections_unfolded = [ "Visibility" ]
 
 [node name="seamfixer_sprite" type="ColorRect" parent="." index="1"]
 
-material = SubResource( 1 )
+material = SubResource( 2 )
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -67,6 +60,6 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "Rect", "Transform", "Visibility" ]
+_sections_unfolded = [ "Anchor", "Animation", "Grow Direction", "Margin", "Material", "Offset", "Rect", "Transform", "Visibility" ]
 
 
