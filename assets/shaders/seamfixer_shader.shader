@@ -1,7 +1,8 @@
 shader_type canvas_item;
 
-uniform sampler2D paint_tex; // The viewport with paint in it
 uniform sampler2D meshtex_pos; // The 3d position data 
+
+//NOTE - this shader can be slow since it only runs once when a mesh is loaded
 
 void fragment()
 {
@@ -11,36 +12,45 @@ void fragment()
 	if (texture(meshtex_pos, UV).a >= epsilon)
 		discard;
 		
-	int neighborhood = 5; //Look in neighborhood of -5....5 pixels for colors to fill in the seams	
+	int neighborhood = 30; //Look in neighborhood of -30....30 pixels for colors to fill in the seams	
 	// TODO allow configuring this (but don't go too high or it'll lag)	
 	
-	vec3 new_color = vec3(0.0); //New color of this pixel
-	int found_counter = 0; //How many samples we found we can use
+	vec3 nearest_color = vec3(0.0); //New color of this pixel
+	bool found = false; //Found a neighbor we can use?
+	
+	float nearest_color_dist = 1000000.0;
 	
 	for (int x = -neighborhood; x <= neighborhood; x++)
 	{
 		for (int y = -neighborhood; y <= neighborhood; y++)
 		{
-			ivec2 point = ivec2(round(UV / SCREEN_PIXEL_SIZE)) + ivec2(x, y);
+			if (x == 0 && y == 0)
+				continue; //Skip this pixel
+				
+			ivec2 point_local = ivec2(x, y);
+			ivec2 point = ivec2(round(UV / SCREEN_PIXEL_SIZE)) + point_local;
 			vec4 pos_col = texelFetch(meshtex_pos, point, 0);
-			vec4 paint_col = texelFetch(paint_tex, point, 0);
 			
-			if (pos_col.a < epsilon || paint_col.a < epsilon)
+			if (pos_col.a < epsilon)
 				continue;
 				
-			new_color += paint_col.rgb;
-			found_counter++;
+			float dist = length(vec2(point_local)); //Distance of this point to the pixel
+			if (dist < nearest_color_dist) //If closer, keep this color as closest
+			{
+				nearest_color = pos_col.rgb;
+				nearest_color_dist = dist;
+				found = true;
+			}
 			
 		}
 	}
 	
 	//If no neighbors found, skip this pixel
-	if (found_counter == 0)
+	if (!found)
 		discard;
 		
-	//Else use the average of the colors found
-	new_color /= float(found_counter);
-	COLOR = vec4(new_color, 1.0);
+	//Else use the NEAREST of the colors found
+	COLOR = vec4(nearest_color, 1.0);
 		
 		
 }

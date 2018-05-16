@@ -1,20 +1,19 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://views/Viewport/Viewport.gd" type="Script" id=1]
 [ext_resource path="res://textures/textures.gd" type="Script" id=2]
 [ext_resource path="res://assets/shaders/paint_shader.tres" type="Material" id=3]
-[ext_resource path="res://assets/shaders/seamfixer_shader.tres" type="Material" id=4]
-[ext_resource path="res://textures/mesh/base.tscn" type="PackedScene" id=5]
-[ext_resource path="res://textures/mesh/position.gd" type="Script" id=6]
-[ext_resource path="res://textures/mesh/normal.gd" type="Script" id=7]
-[ext_resource path="res://views/Viewport/InputStates.gd" type="Script" id=8]
-[ext_resource path="res://views/Viewport/Paint.gd" type="Script" id=9]
-[ext_resource path="res://views/Viewport/Rotate.gd" type="Script" id=10]
-[ext_resource path="res://views/Viewport/Zoom.gd" type="Script" id=11]
-[ext_resource path="res://views/Viewport/Pan.gd" type="Script" id=12]
-[ext_resource path="res://views/Viewport/BrushResize.gd" type="Script" id=13]
-[ext_resource path="res://views/Viewport/BrushSoftnessChange.gd" type="Script" id=14]
-[ext_resource path="res://views/Viewport/ColorPick.gd" type="Script" id=15]
+[ext_resource path="res://textures/mesh/base.tscn" type="PackedScene" id=4]
+[ext_resource path="res://textures/mesh/position.gd" type="Script" id=5]
+[ext_resource path="res://textures/mesh/normal.gd" type="Script" id=6]
+[ext_resource path="res://views/Viewport/InputStates.gd" type="Script" id=7]
+[ext_resource path="res://views/Viewport/Paint.gd" type="Script" id=8]
+[ext_resource path="res://views/Viewport/Rotate.gd" type="Script" id=9]
+[ext_resource path="res://views/Viewport/Zoom.gd" type="Script" id=10]
+[ext_resource path="res://views/Viewport/Pan.gd" type="Script" id=11]
+[ext_resource path="res://views/Viewport/BrushResize.gd" type="Script" id=12]
+[ext_resource path="res://views/Viewport/BrushSoftnessChange.gd" type="Script" id=13]
+[ext_resource path="res://views/Viewport/ColorPick.gd" type="Script" id=14]
 
 [sub_resource type="ProceduralSky" id=1]
 
@@ -220,7 +219,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission", "Flags", "Metallic", "Parameters", "Resource", "Roughness", "Vertex Color" ]
 
-[node name="main" type="WorldEnvironment"]
+[node name="main" type="WorldEnvironment" index="0"]
 
 environment = SubResource( 2 )
 script = ExtResource( 1 )
@@ -275,22 +274,6 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 color = Color( 1, 1, 1, 1 )
 _sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "Rect", "Transform" ]
-
-[node name="seamfixer_sprite" type="ColorRect" parent="textures/paint/albedo" index="1"]
-
-material = ExtResource( 4 )
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "Rect", "Transform", "Visibility" ]
 
 [node name="roughness" type="Viewport" parent="textures/paint" index="1"]
 
@@ -430,45 +413,45 @@ _sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "R
 
 [node name="mesh" type="Node" parent="textures" index="1"]
 
-[node name="position" parent="textures/mesh" index="0" instance=ExtResource( 5 )]
+[node name="position" parent="textures/mesh" index="0" instance=ExtResource( 4 )]
+
+script = ExtResource( 5 )
+
+[node name="normal" parent="textures/mesh" index="1" instance=ExtResource( 4 )]
 
 script = ExtResource( 6 )
 
-[node name="normal" parent="textures/mesh" index="1" instance=ExtResource( 5 )]
+[node name="InputStates" type="Node" parent="." index="1"]
 
 script = ExtResource( 7 )
 
-[node name="InputStates" type="Node" parent="." index="1"]
+[node name="Paint" type="Node" parent="InputStates" index="0"]
 
 script = ExtResource( 8 )
 
-[node name="Paint" type="Node" parent="InputStates" index="0"]
+[node name="Rotate" type="Node" parent="InputStates" index="1"]
 
 script = ExtResource( 9 )
 
-[node name="Rotate" type="Node" parent="InputStates" index="1"]
+[node name="Zoom" type="Node" parent="InputStates" index="2"]
 
 script = ExtResource( 10 )
 
-[node name="Zoom" type="Node" parent="InputStates" index="2"]
+[node name="Pan" type="Node" parent="InputStates" index="3"]
 
 script = ExtResource( 11 )
 
-[node name="Pan" type="Node" parent="InputStates" index="3"]
+[node name="BrushResize" type="Node" parent="InputStates" index="4"]
 
 script = ExtResource( 12 )
 
-[node name="BrushResize" type="Node" parent="InputStates" index="4"]
+[node name="BrushSoftnessChange" type="Node" parent="InputStates" index="5"]
 
 script = ExtResource( 13 )
 
-[node name="BrushSoftnessChange" type="Node" parent="InputStates" index="5"]
-
-script = ExtResource( 14 )
-
 [node name="ColorPick" type="Node" parent="InputStates" index="6"]
 
-script = ExtResource( 15 )
+script = ExtResource( 14 )
 
 [node name="spatial" type="Node" parent="." index="2"]
 
