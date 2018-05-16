@@ -1,13 +1,18 @@
 extends Control
 
+onready var paint_viewport = $View/MainFrame/LeftPanel/PaintViewport/ViewportContainer/Viewport
+
 func _ready():
 	PainterState.brush.softness_slider = $View/MainFrame/RightPanel/Brush/Preview/softness_slider
 	PainterState.brush.color_picker = $View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton
 	
-	PainterState.viewports.albedo = $View/MainFrame/LeftPanel/ViewportContainer/Viewport/main/textures/paint/albedo
-	PainterState.viewports.roughness = $View/MainFrame/LeftPanel/ViewportContainer/Viewport/main/textures/paint/roughness
-	PainterState.viewports.metalness = $View/MainFrame/LeftPanel/ViewportContainer/Viewport/main/textures/paint/metalness
-	PainterState.viewports.emission = $View/MainFrame/LeftPanel/ViewportContainer/Viewport/main/textures/paint/emission
+	PainterState.paint_viewport.cursor_node = $View/MainFrame/LeftPanel/PaintViewport/ViewportUI/Cursor
+	PainterState.paint_viewport.colorpicker_node = $View/MainFrame/LeftPanel/PaintViewport/ViewportUI/ColorPicker
+	
+	PainterState.viewports.albedo = paint_viewport.get_node("main/textures/paint/albedo")
+	PainterState.viewports.roughness = paint_viewport.get_node("main/textures/paint/roughness")
+	PainterState.viewports.metalness = paint_viewport.get_node("main/textures/paint/metalness")
+	PainterState.viewports.emission = paint_viewport.get_node("main/textures/paint/emission")
 	
 	var albedo_rect = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/albedo/rect
 	var roughness_rect = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/roughness/rect
@@ -19,44 +24,20 @@ func _ready():
 	metalness_rect.texture = PainterState.viewports.metalness.get_texture()
 	emission_rect.texture = PainterState.viewports.emission.get_texture()
 		
-	# workaround for https://github.com/godotengine/godot/pull/18161
-	$View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton.get_popup().connect("modal_closed", self, "_on_ColorPickerButton_popup_closed")
-
 	# little hack
 	_on_active_texture_changed(0)
 	
 	PainterState.connect("active_texture_changed", self, "_on_active_texture_changed")
 	
 	# Setup the menu bar signals
-	$View/MenuBar/FileMenu.connect("about_to_show", self, "_on_filemenu_about_to_show")
 	$View/MenuBar/FileMenu.get_popup().connect("index_pressed", self, "_on_filemenu_index_pressed")
-	$View/MenuBar/FileMenu.get_popup().connect("popup_hide", self, "_on_filemenu_hidden")
-
-func _on_filemenu_about_to_show():
-	# Hack to prevent the viewport stealing input
-	$View/MainFrame/LeftPanel/ViewportContainer/Viewport.gui_disable_input = true
-
-func _on_filemenu_hidden():
-	# Hack to prevent the viewport stealing input	
-	$View/MainFrame/LeftPanel/ViewportContainer/Viewport.gui_disable_input = false
 	
 	
 func _on_filemenu_index_pressed(index):
 	match index:
 		# TODO show a FileDialog here
-		0: $View/MainFrame/LeftPanel/ViewportContainer/Viewport/main.change_mesh(preload("res://assets/models/Torus.mesh"))
+		0: paint_viewport.get_node("main").change_mesh(preload("res://assets/models/Torus.mesh"))
 		1: get_tree().quit()
-		
-
-func _on_ColorPickerButton_popup_closed():
-	# Hack to prevent the viewport stealing input	
-	$View/MainFrame/LeftPanel/ViewportContainer/Viewport.gui_disable_input = false
-
-
-func _on_ColorPickerButton_button_down():
-	# Hack to prevent the viewport stealing input	
-	$View/MainFrame/LeftPanel/ViewportContainer/Viewport.gui_disable_input = true
-
 
 func _on_ColorPickerButton_color_changed(color):
 	PainterState.brush.color = color

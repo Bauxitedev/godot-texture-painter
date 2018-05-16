@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://views/Viewport/Viewport.gd" type="Script" id=1]
 [ext_resource path="res://textures/textures.gd" type="Script" id=2]
@@ -117,36 +117,7 @@ adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Background", "Glow", "Glow/levels", "Tonemap" ]
 
-[sub_resource type="StyleBoxFlat" id=3]
-
-content_margin_left = -1.0
-content_margin_right = -1.0
-content_margin_top = -1.0
-content_margin_bottom = -1.0
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
-draw_center = true
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 1, 1, 1, 1 )
-border_blend = false
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-corner_detail = 8
-expand_margin_left = 0.0
-expand_margin_right = 0.0
-expand_margin_top = 0.0
-expand_margin_bottom = 0.0
-shadow_color = Color( 0, 0, 0, 0.6 )
-shadow_size = 0
-anti_aliasing = true
-anti_aliasing_size = 1
-_sections_unfolded = [ "Border", "Border Width", "Corner Radius" ]
-
-[sub_resource type="ArrayMesh" id=4]
+[sub_resource type="ArrayMesh" id=3]
 
 blend_shape_mode = 1
 custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
@@ -164,31 +135,31 @@ surfaces/0 = {
 }
 _sections_unfolded = [ "surface_1" ]
 
-[sub_resource type="ViewportTexture" id=5]
+[sub_resource type="ViewportTexture" id=4]
 
 resource_local_to_scene = true
 flags = 0
 viewport_path = NodePath("textures/paint/albedo")
 
-[sub_resource type="ViewportTexture" id=6]
+[sub_resource type="ViewportTexture" id=5]
 
 resource_local_to_scene = true
 flags = 0
 viewport_path = NodePath("textures/paint/emission")
 
-[sub_resource type="ViewportTexture" id=7]
+[sub_resource type="ViewportTexture" id=6]
 
 resource_local_to_scene = true
 flags = 0
 viewport_path = NodePath("textures/paint/metalness")
 
-[sub_resource type="ViewportTexture" id=8]
+[sub_resource type="ViewportTexture" id=7]
 
 resource_local_to_scene = true
 flags = 0
 viewport_path = NodePath("textures/paint/roughness")
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=8]
 
 resource_local_to_scene = true
 render_priority = 0
@@ -213,20 +184,20 @@ params_billboard_mode = 0
 params_grow = false
 params_use_alpha_scissor = false
 albedo_color = Color( 1, 1, 1, 1 )
-albedo_texture = SubResource( 5 )
+albedo_texture = SubResource( 4 )
 metallic = 1.0
 metallic_specular = 0.5
-metallic_texture = SubResource( 7 )
+metallic_texture = SubResource( 6 )
 metallic_texture_channel = 4
 roughness = 1.0
-roughness_texture = SubResource( 8 )
+roughness_texture = SubResource( 7 )
 roughness_texture_channel = 4
 emission_enabled = true
 emission = Color( 0, 0, 0, 1 )
 emission_energy = 1.0
 emission_operator = 0
 emission_on_uv2 = false
-emission_texture = SubResource( 6 )
+emission_texture = SubResource( 5 )
 normal_enabled = false
 rim_enabled = false
 clearcoat_enabled = false
@@ -249,7 +220,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission", "Flags", "Metallic", "Parameters", "Resource", "Roughness", "Vertex Color" ]
 
-[node name="main" type="WorldEnvironment" index="0"]
+[node name="main" type="WorldEnvironment"]
 
 environment = SubResource( 2 )
 script = ExtResource( 1 )
@@ -319,11 +290,10 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 color = Color( 1, 1, 1, 1 )
-_sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "Rect", "Transform" ]
+_sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "Rect", "Transform", "Visibility" ]
 
 [node name="roughness" type="Viewport" parent="textures/paint" index="1"]
 
-editor/display_folded = true
 arvr = false
 size = Vector2( 2048, 2048 )
 own_world = false
@@ -369,7 +339,6 @@ _sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "R
 
 [node name="metalness" type="Viewport" parent="textures/paint" index="2"]
 
-editor/display_folded = true
 arvr = false
 size = Vector2( 2048, 2048 )
 own_world = false
@@ -501,77 +470,7 @@ script = ExtResource( 14 )
 
 script = ExtResource( 15 )
 
-[node name="ui" type="CanvasLayer" parent="." index="2"]
-
-layer = 1
-offset = Vector2( 0, 0 )
-rotation = 0.0
-scale = Vector2( 1, 1 )
-transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-
-[node name="button_paint" type="TextureButton" parent="ui" index="0"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 13
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-action_mode = 0
-enabled_focus_mode = 2
-shortcut = null
-group = null
-expand = true
-stretch_mode = 1
-_sections_unfolded = [ "Focus", "Mouse", "Size Flags", "Textures" ]
-
-[node name="cursor" type="Panel" parent="ui" index="1"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 64.0
-margin_bottom = 64.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-custom_styles/panel = SubResource( 3 )
-_sections_unfolded = [ "Anchor", "Material", "Mouse", "Rect", "Size Flags", "Visibility", "custom_styles" ]
-
-[node name="ColorPicker" type="ColorPicker" parent="ui" index="2"]
-
-visible = false
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 4.0
-margin_bottom = 4.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 1
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-alignment = 0
-color = Color( 1, 1, 1, 1 )
-edit_alpha = true
-raw_mode = false
-_sections_unfolded = [ "Rect" ]
-
-[node name="spatial" type="Node" parent="." index="3"]
+[node name="spatial" type="Node" parent="." index="2"]
 
 [node name="suz" type="MeshInstance" parent="spatial" index="0"]
 
@@ -584,9 +483,9 @@ lod_min_distance = 0.0
 lod_min_hysteresis = 0.0
 lod_max_distance = 0.0
 lod_max_hysteresis = 0.0
-mesh = SubResource( 4 )
+mesh = SubResource( 3 )
 skeleton = NodePath("..")
-material/0 = SubResource( 9 )
+material/0 = SubResource( 8 )
 _sections_unfolded = [ "Geometry", "Transform", "Visibility", "material" ]
 
 [node name="camroot" type="Spatial" parent="spatial" index="1"]
@@ -638,7 +537,5 @@ directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Light" ]
-
-[connection signal="gui_input" from="ui/button_paint" to="." method="_on_button_paint_gui_input"]
 
 

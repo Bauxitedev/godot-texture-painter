@@ -4,11 +4,13 @@ var initial_mouse_position
 
 onready var state_machine = $".."
 
-onready var color_picker = $"../../ui/ColorPicker"
-onready var cursor = $"../../ui/cursor"
+var color_picker
 
 func on_init():
-	cursor.visible = false
+	
+	color_picker = PainterState.paint_viewport.colorpicker_node
+	
+	PainterState.paint_viewport.cursor_node.visible = false
 	
 	initial_mouse_position = get_tree().root.get_mouse_position()
 	var middle_position = get_viewport().get_mouse_position()
@@ -18,7 +20,7 @@ func on_init():
 	color_picker.show()
 
 func on_finalize():
-	cursor.visible = true
+	PainterState.paint_viewport.cursor_node.visible = true
 	color_picker.hide()
 	Input.warp_mouse_position(initial_mouse_position)
 	
