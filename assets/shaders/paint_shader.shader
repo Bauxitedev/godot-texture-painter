@@ -89,10 +89,11 @@ void fragment()
 	{
 		if (!decal) //Paint brush
 		{
-			//Cut in cirle (anti aliased)
-			float multiplier = length(depth_uv - 0.5);
-			float eps = fwidth(multiplier);
-			multiplier = smoothstep(multiplier - eps, multiplier + eps, 0.5);
+			//Gonna disable AA for now because of the outline bug
+			if (length(depth_uv - 0.5) >= 0.5 - 1e-4)
+				discard;
+				
+			float multiplier = 1.0;
 			
 			//Obey normals
 			multiplier *= normal_mutliplier;
