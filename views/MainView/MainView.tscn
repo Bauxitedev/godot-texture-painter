@@ -35,7 +35,7 @@ anti_aliasing = true
 anti_aliasing_size = 1
 _sections_unfolded = [ "Border", "Border Width", "Corner Radius" ]
 
-[node name="MainView" type="Control" index="0"]
+[node name="MainView" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0

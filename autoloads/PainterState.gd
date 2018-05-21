@@ -19,6 +19,11 @@ var viewports = {
 	"emission": null,
 }
 
+var utility_viewports = {
+	"position": null,
+	"normal": null,
+}
+
 enum TextureType {
 	Albedo,
 	Roughness,
@@ -42,3 +47,12 @@ func set_active_texture(tex):
 
 func _ready():
 	pass
+
+func store_textures_on_disk(base_path):
+	for vp in utility_viewports:
+		var viewport = utility_viewports[vp]
+		viewport.get_texture().get_data().save_png(base_path + "/" + vp + ".png")
+
+	for vp in viewports:
+		var viewport = viewports[vp]
+		viewport.get_texture().get_data().save_png(base_path + "/" + vp + ".png")

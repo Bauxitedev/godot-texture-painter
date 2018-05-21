@@ -14,6 +14,9 @@ func _ready():
 	PainterState.viewports.metalness = paint_viewport.get_node("main/textures/paint/metalness")
 	PainterState.viewports.emission = paint_viewport.get_node("main/textures/paint/emission")
 	
+	PainterState.utility_viewports.position = paint_viewport.get_node("main/textures/mesh/position")
+	PainterState.utility_viewports.normal = paint_viewport.get_node("main/textures/mesh/normal")
+	
 	var albedo_rect = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/albedo/rect
 	var roughness_rect = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/roughness/rect
 	var metalness_rect = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/metalness/rect

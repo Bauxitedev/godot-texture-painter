@@ -4,6 +4,10 @@ onready var state_machine = $InputStates
 
 
 func _process(delta):
+	
+	if Input.is_key_pressed(KEY_F12):
+		PainterState.store_textures_on_disk("res://export/")
+	
 	state_machine.update(delta)
 
 func _on_ViewportUI_gui_input(ev):
