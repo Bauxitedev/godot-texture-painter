@@ -239,8 +239,8 @@ world = null
 transparent_bg = true
 msaa = 0
 hdr = true
-disable_3d = false
-usage = 2
+disable_3d = true
+usage = 3
 debug_draw = 0
 render_target_v_flip = true
 render_target_clear_mode = 2
@@ -255,7 +255,7 @@ shadow_atlas_quad_0 = 2
 shadow_atlas_quad_1 = 2
 shadow_atlas_quad_2 = 3
 shadow_atlas_quad_3 = 4
-_sections_unfolded = [ "Render Target" ]
+_sections_unfolded = [ "Render Target", "Rendering" ]
 
 [node name="paint_sprite" type="ColorRect" parent="textures/paint/albedo" index="0" groups=[
 "paint_sprite",
@@ -284,8 +284,8 @@ world = null
 transparent_bg = true
 msaa = 0
 hdr = true
-disable_3d = false
-usage = 2
+disable_3d = true
+usage = 3
 debug_draw = 0
 render_target_v_flip = true
 render_target_clear_mode = 2
@@ -300,7 +300,7 @@ shadow_atlas_quad_0 = 2
 shadow_atlas_quad_1 = 2
 shadow_atlas_quad_2 = 3
 shadow_atlas_quad_3 = 4
-_sections_unfolded = [ "Render Target" ]
+_sections_unfolded = [ "Render Target", "Rendering" ]
 
 [node name="paint_sprite" type="ColorRect" parent="textures/paint/roughness" index="0" groups=[
 "paint_sprite",
@@ -329,8 +329,8 @@ world = null
 transparent_bg = true
 msaa = 0
 hdr = true
-disable_3d = false
-usage = 2
+disable_3d = true
+usage = 3
 debug_draw = 0
 render_target_v_flip = true
 render_target_clear_mode = 2
@@ -345,7 +345,7 @@ shadow_atlas_quad_0 = 2
 shadow_atlas_quad_1 = 2
 shadow_atlas_quad_2 = 3
 shadow_atlas_quad_3 = 4
-_sections_unfolded = [ "Render Target" ]
+_sections_unfolded = [ "Render Target", "Rendering" ]
 
 [node name="paint_sprite" type="ColorRect" parent="textures/paint/metalness" index="0" groups=[
 "paint_sprite",
@@ -367,7 +367,6 @@ _sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "R
 
 [node name="emission" type="Viewport" parent="textures/paint" index="3"]
 
-editor/display_folded = true
 arvr = false
 size = Vector2( 2048, 2048 )
 own_world = false
@@ -375,8 +374,8 @@ world = null
 transparent_bg = true
 msaa = 0
 hdr = true
-disable_3d = false
-usage = 2
+disable_3d = true
+usage = 3
 debug_draw = 0
 render_target_v_flip = true
 render_target_clear_mode = 2
@@ -391,7 +390,7 @@ shadow_atlas_quad_0 = 2
 shadow_atlas_quad_1 = 2
 shadow_atlas_quad_2 = 3
 shadow_atlas_quad_3 = 4
-_sections_unfolded = [ "Render Target" ]
+_sections_unfolded = [ "Render Target", "Rendering" ]
 
 [node name="paint_sprite" type="ColorRect" parent="textures/paint/emission" index="0" groups=[
 "paint_sprite",
@@ -415,10 +414,14 @@ _sections_unfolded = [ "Anchor", "Animation", "Margin", "Material", "Offset", "R
 
 [node name="position" parent="textures/mesh" index="0" instance=ExtResource( 4 )]
 
+disable_3d = true
+usage = 3
 script = ExtResource( 5 )
 
 [node name="normal" parent="textures/mesh" index="1" instance=ExtResource( 4 )]
 
+disable_3d = true
+usage = 3
 script = ExtResource( 6 )
 
 [node name="InputStates" type="Node" parent="." index="1"]
