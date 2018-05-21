@@ -10,7 +10,7 @@ void fragment()
 	float epsilon = 1e-5;
 	
 	//Only need to fix seams on pixels outside any UV islands
-	if (texture(SCREEN_TEXTURE, UV).a >= epsilon)
+	if (texture(SCREEN_TEXTURE, UV).a > 0.999)
 		discard;
 		
 	int neighborhood = 30; //Look in neighborhood of -30....30 pixels for colors to fill in the seams	
@@ -38,7 +38,7 @@ void fragment()
 			//Okay, fixed it, must use SCREEN_TEXTURE instead of meshtex_pos here
 			vec4 pos_col = texelFetch(SCREEN_TEXTURE, point, 0);
 			
-			if (pos_col.a < epsilon)
+			if (pos_col.a < 0.999)
 				continue;
 				
 			float dist = dot(vec2(point_local), vec2(point_local)); //Distance squared of this point to the pixel
