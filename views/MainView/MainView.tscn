@@ -35,7 +35,7 @@ anti_aliasing = true
 anti_aliasing_size = 1
 _sections_unfolded = [ "Border", "Border Width", "Corner Radius" ]
 
-[node name="MainView" type="Control" index="0"]
+[node name="MainView" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -782,7 +782,7 @@ align = 1
 color = Color( 1, 1, 1, 1 )
 edit_alpha = true
 
-[node name="Brush2" type="VBoxContainer" parent="View/MainFrame/RightPanel" index="1"]
+[node name="BottomPanel" type="VBoxContainer" parent="View/MainFrame/RightPanel" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -801,7 +801,7 @@ size_flags_vertical = 1
 alignment = 0
 _sections_unfolded = [ "Rect" ]
 
-[node name="Layers" type="Panel" parent="View/MainFrame/RightPanel/Brush2" index="0"]
+[node name="Layers" type="Panel" parent="View/MainFrame/RightPanel/BottomPanel" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -818,7 +818,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="Label" type="Label" parent="View/MainFrame/RightPanel/Brush2/Layers" index="0"]
+[node name="Label" type="Label" parent="View/MainFrame/RightPanel/BottomPanel/Layers" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -837,7 +837,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="View/MainFrame/RightPanel/Brush2" index="1"]
+[node name="VBoxContainer" type="VBoxContainer" parent="View/MainFrame/RightPanel/BottomPanel" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -855,7 +855,7 @@ size_flags_vertical = 1
 alignment = 0
 _sections_unfolded = [ "Focus", "Grow Direction", "Hint", "Rect", "Size Flags" ]
 
-[node name="znear" type="Label" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer" index="0"]
+[node name="znear" type="Label" parent="View/MainFrame/RightPanel/BottomPanel/VBoxContainer" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -874,7 +874,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="znear_box" type="HBoxContainer" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer" index="1"]
+[node name="znear_box" type="HBoxContainer" parent="View/MainFrame/RightPanel/BottomPanel/VBoxContainer" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -891,7 +891,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
 
-[node name="val" type="Label" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box" index="0"]
+[node name="val" type="Label" parent="View/MainFrame/RightPanel/BottomPanel/VBoxContainer/znear_box" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -913,7 +913,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect" ]
 
-[node name="znear_slider" type="HSlider" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box" index="1"]
+[node name="znear_slider" type="HSlider" parent="View/MainFrame/RightPanel/BottomPanel/VBoxContainer/znear_box" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -942,7 +942,7 @@ ticks_on_borders = false
 focus_mode = 2
 _sections_unfolded = [ "Size Flags" ]
 
-[node name="zfar" type="Label" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer" index="2"]
+[node name="zfar" type="Label" parent="View/MainFrame/RightPanel/BottomPanel/VBoxContainer" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -962,7 +962,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="zfar_box" type="HBoxContainer" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer" index="3"]
+[node name="zfar_box" type="HBoxContainer" parent="View/MainFrame/RightPanel/BottomPanel/VBoxContainer" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -979,7 +979,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 alignment = 0
 
-[node name="val" type="Label" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box" index="0"]
+[node name="val" type="Label" parent="View/MainFrame/RightPanel/BottomPanel/VBoxContainer/zfar_box" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -1001,7 +1001,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="zfar_slider" type="HSlider" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box" index="1"]
+[node name="zfar_slider" type="HSlider" parent="View/MainFrame/RightPanel/BottomPanel/VBoxContainer/zfar_box" index="1"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -1036,8 +1036,8 @@ _sections_unfolded = [ "Size Flags" ]
 
 [connection signal="color_changed" from="View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
 
-[connection signal="value_changed" from="View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box/znear_slider" to="." method="_on_znear_slider_value_changed"]
+[connection signal="value_changed" from="View/MainFrame/RightPanel/BottomPanel/VBoxContainer/znear_box/znear_slider" to="." method="_on_znear_slider_value_changed"]
 
-[connection signal="value_changed" from="View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box/zfar_slider" to="." method="_on_zfar_slider_value_changed"]
+[connection signal="value_changed" from="View/MainFrame/RightPanel/BottomPanel/VBoxContainer/zfar_box/zfar_slider" to="." method="_on_zfar_slider_value_changed"]
 
 

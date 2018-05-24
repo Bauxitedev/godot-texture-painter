@@ -65,15 +65,15 @@ func _on_softness_slider_value_changed(value):
 
 
 func _on_znear_slider_value_changed(value):
-	$View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box/val.text = var2str(value)
+	$View/MainFrame/RightPanel/BottomPanel/VBoxContainer/znear_box/val.text = var2str(value)
 	cam.near = value
 	
 	if cam.near > cam.far:
-		$View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box/zfar_slider.value = value + 1e-2
+		$View/MainFrame/RightPanel/BottomPanel/VBoxContainer/zfar_box/zfar_slider.value = value + 1e-2
 
 func _on_zfar_slider_value_changed(value):
-	$View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box/val.text = var2str(value)	
+	$View/MainFrame/RightPanel/BottomPanel/VBoxContainer/zfar_box/val.text = var2str(value)	
 	cam.far = value
 	
 	if cam.far < cam.near:
-		$View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box/znear_slider.value = value - 1e-2
+		$View/MainFrame/RightPanel/BottomPanel/VBoxContainer/znear_box/znear_slider.value = value - 1e-2

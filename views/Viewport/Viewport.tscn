@@ -219,7 +219,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission", "Flags", "Metallic", "Parameters", "Resource", "Roughness", "Vertex Color" ]
 
-[node name="main" type="WorldEnvironment"]
+[node name="main" type="WorldEnvironment" index="0"]
 
 environment = SubResource( 2 )
 script = ExtResource( 1 )
@@ -458,7 +458,7 @@ script = ExtResource( 14 )
 
 [node name="spatial" type="Node" parent="." index="2"]
 
-[node name="suz" type="MeshInstance" parent="spatial" index="0"]
+[node name="mesh" type="MeshInstance" parent="spatial" index="0"]
 
 layers = 1
 material_override = null

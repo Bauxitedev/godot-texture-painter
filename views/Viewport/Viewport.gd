@@ -35,9 +35,8 @@ func change_mesh(mesh):
 	
 	# This will make the program paint on a different mesh
 	
-	# TODO rename the "suz" node to "mesh" for consistency
-	var mat = $spatial/suz.get_surface_material(0)
-	$spatial/suz.mesh = mesh
+	var mat = $spatial/mesh.get_surface_material(0)
+	$spatial/mesh.mesh = mesh
 
 	# Set all the viewports to Filter + Aniso so we get smooth jaggies
 	# (This needs to be done here, since it seems not to work when set in the editor)
@@ -49,7 +48,7 @@ func change_mesh(mesh):
 	mat.metallic_texture.flags = flags		
 	mat.emission_texture.flags = flags
 	
-	$spatial/suz.set_surface_material(0, mat)
+	$spatial/mesh.set_surface_material(0, mat)
 	
 
 	
