@@ -35,7 +35,7 @@ mat4 get_projection_matrix()
 	mat4 matrix = mat4(1.0);
 	matrix[0][0] = cotangent / aspect;
 	matrix[1][1] = cotangent;
-	matrix[2][2] = -(z_far + z_near) / deltaZ;
+	matrix[2][2] = (z_far + z_near) / deltaZ;
 	matrix[2][3] = 1.0; //try +1
 	matrix[3][2] = 2.0 * z_near * z_far / deltaZ; 
 	
@@ -78,10 +78,7 @@ void fragment()
 	bool outside_bounds = depth_uv.x < 0.0 || depth_uv.x > 1.0 || depth_uv.y < 0.0 || depth_uv.y > 1.0;
 	bool outside_depth_bounds = obj_pos.z > 1.0 || obj_pos.z < -1.0;
 	
-	//TODO somehow obj_pos.z is always < -1
-	//TODO outside_depth_bounds is broken!
-	
-	if (outside_bounds)
+	if (outside_bounds || outside_depth_bounds)
 	{
 		COLOR = vec4(0);
 	}
