@@ -782,9 +782,8 @@ align = 1
 color = Color( 1, 1, 1, 1 )
 edit_alpha = true
 
-[node name="Layers" type="Panel" parent="View/MainFrame/RightPanel" index="1"]
+[node name="Brush2" type="VBoxContainer" parent="View/MainFrame/RightPanel" index="1"]
 
-editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -795,13 +794,31 @@ margin_bottom = 930.0
 rect_min_size = Vector2( 0, 300 )
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+_sections_unfolded = [ "Rect" ]
+
+[node name="Layers" type="Panel" parent="View/MainFrame/RightPanel/Brush2" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 200.0
+margin_bottom = 518.0
+rect_min_size = Vector2( 0, 300 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
 mouse_filter = 0
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 3
-size_flags_vertical = 1
+size_flags_vertical = 3
 _sections_unfolded = [ "Rect", "Size Flags" ]
 
-[node name="Label" type="Label" parent="View/MainFrame/RightPanel/Layers" index="0"]
+[node name="Label" type="Label" parent="View/MainFrame/RightPanel/Brush2/Layers" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -820,10 +837,207 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
+[node name="VBoxContainer" type="VBoxContainer" parent="View/MainFrame/RightPanel/Brush2" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 522.0
+margin_right = 200.0
+margin_bottom = 622.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+alignment = 0
+_sections_unfolded = [ "Focus", "Grow Direction", "Hint", "Rect", "Size Flags" ]
+
+[node name="znear" type="Label" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 200.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Z-near"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="znear_box" type="HBoxContainer" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 26.0
+margin_right = 200.0
+margin_bottom = 48.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+
+[node name="val" type="Label" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 40, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "0.01"
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect" ]
+
+[node name="znear_slider" type="HSlider" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 44.0
+margin_right = 200.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 0.01
+max_value = 100.0
+step = 0.1
+page = 0.0
+value = 0.01
+exp_edit = true
+rounded = false
+editable = true
+tick_count = 0
+ticks_on_borders = false
+focus_mode = 2
+_sections_unfolded = [ "Size Flags" ]
+
+[node name="zfar" type="Label" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer" index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 52.0
+margin_right = 200.0
+margin_bottom = 74.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "Z-far"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="zfar_box" type="HBoxContainer" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer" index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 78.0
+margin_right = 200.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+alignment = 0
+
+[node name="val" type="Label" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 40, 0 )
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+text = "50"
+clip_text = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "Size Flags" ]
+
+[node name="zfar_slider" type="HSlider" parent="View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box" index="1"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 44.0
+margin_right = 200.0
+margin_bottom = 22.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+focus_mode = 2
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 0.01
+max_value = 100.0
+step = 0.1
+page = 0.0
+value = 50.0
+exp_edit = true
+rounded = false
+editable = true
+tick_count = 0
+ticks_on_borders = false
+focus_mode = 2
+_sections_unfolded = [ "Size Flags" ]
+
 [connection signal="gui_input" from="View/MainFrame/LeftPanel/PaintViewport/ViewportUI" to="View/MainFrame/LeftPanel/PaintViewport/ViewportContainer/Viewport/main" method="_on_ViewportUI_gui_input"]
 
 [connection signal="value_changed" from="View/MainFrame/RightPanel/Brush/Preview/softness_slider" to="." method="_on_softness_slider_value_changed"]
 
 [connection signal="color_changed" from="View/MainFrame/RightPanel/Brush/VBoxContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
+
+[connection signal="value_changed" from="View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box/znear_slider" to="." method="_on_znear_slider_value_changed"]
+
+[connection signal="value_changed" from="View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box/zfar_slider" to="." method="_on_zfar_slider_value_changed"]
 
 

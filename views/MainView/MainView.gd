@@ -1,6 +1,7 @@
 extends Control
 
 onready var paint_viewport = $View/MainFrame/LeftPanel/PaintViewport/ViewportContainer/Viewport
+onready var cam = paint_viewport.get_node("main/spatial/camroot/cam")
 
 func _ready():
 	PainterState.brush.softness_slider = $View/MainFrame/RightPanel/Brush/Preview/softness_slider
@@ -61,3 +62,18 @@ func _on_softness_slider_value_changed(value):
 	var gradient = $View/MainFrame/RightPanel/Brush/Preview/rect.material.get_shader_param("brush_gradient").gradient
 	
 	gradient.set_offset(0, value * (1 - 1e-3))
+
+
+func _on_znear_slider_value_changed(value):
+	$View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box/val.text = var2str(value)
+	cam.near = value
+	
+	if cam.near > cam.far:
+		$View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box/zfar_slider.value = value + 1e-2
+
+func _on_zfar_slider_value_changed(value):
+	$View/MainFrame/RightPanel/Brush2/VBoxContainer/zfar_box/val.text = var2str(value)	
+	cam.far = value
+	
+	if cam.far < cam.near:
+		$View/MainFrame/RightPanel/Brush2/VBoxContainer/znear_box/znear_slider.value = value - 1e-2

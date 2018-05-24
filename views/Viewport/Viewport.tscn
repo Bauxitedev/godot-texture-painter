@@ -175,7 +175,7 @@ vertex_color_is_srgb = false
 params_diffuse_mode = 0
 params_specular_mode = 0
 params_blend_mode = 0
-params_cull_mode = 2
+params_cull_mode = 0
 params_depth_draw_mode = 3
 params_line_width = 1.0
 params_point_size = 1.0
@@ -219,7 +219,7 @@ proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission", "Flags", "Metallic", "Parameters", "Resource", "Roughness", "Vertex Color" ]
 
-[node name="main" type="WorldEnvironment" index="0"]
+[node name="main" type="WorldEnvironment"]
 
 environment = SubResource( 2 )
 script = ExtResource( 1 )
@@ -492,8 +492,8 @@ projection = 0
 current = true
 fov = 45.0
 size = 1.0
-near = 0.05
-far = 100.0
+near = 0.01
+far = 50.0
 _sections_unfolded = [ "Transform" ]
 
 [node name="light" type="DirectionalLight" parent="spatial" index="2"]
