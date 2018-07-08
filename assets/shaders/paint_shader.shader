@@ -93,11 +93,10 @@ void fragment()
 	{
 		
 		//shadow mapping to prevent painting on occluded surfaces
-		/*vec3 l = cam_mat[2].xyz; //Light direction
+		vec3 l = cam_mat[2].xyz; //Light direction
 		float cosTheta = clamp(dot(normalize(normal), normalize(l)), 0.0, 1.0);
-		float bias = 0.5*tan(acos(cosTheta));
-		bias = clamp(bias, 0.1, 0.3); //try 0.1 constant*/
-		float bias = 0.25;
+		float bias = 0.005*tan(acos(cosTheta));
+		bias = clamp(bias, 0.0, 0.01); 
 	
 		//float c = 8.0; //80
 		float shadow_mult = 0.0; //shadow multiplier
@@ -110,7 +109,7 @@ void fragment()
 		}
 		shadow_mult /= float(divisor);*/
 		
-		float d = texture(depth_tex, depth_uv_shadow, 0).r * 2.0 - 1.0;
+		float d = pow(texture(depth_tex, depth_uv_shadow, 0).r, 1.0) * 2.0 - 1.0;
 		shadow_mult = step(obj_pos.z - bias, d);
 		
 		if (!decal) //Paint brush

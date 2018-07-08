@@ -7,10 +7,7 @@ path="res://.import/tree.png-0d081dbd9471f0ef8a03a3fbbd275e2d.stex"
 [deps]
 
 source_file="res://images/tree.png"
-source_md5="eaae57acf40eab6f9ff28d28b4d6b209"
-
 dest_files=[ "res://.import/tree.png-0d081dbd9471f0ef8a03a3fbbd275e2d.stex" ]
-dest_md5="bb879e38fa685c3795f3f06931081ee0"
 
 [params]
 
