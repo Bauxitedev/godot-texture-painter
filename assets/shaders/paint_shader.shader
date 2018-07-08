@@ -73,12 +73,14 @@ void fragment()
 	depth_uv = 2.0 * depth_uv - 1.0;
 	depth_uv *= scale;
 	depth_uv = 0.5 + 0.5 * depth_uv;
-	depth_uv = vec2(1.0-depth_uv.x, depth_uv.y); //x flipping needed for some reason???
+	
+	vec2 depth_uv_shadow = 0.5 + 0.5 * obj_pos.xy;
+	depth_uv_shadow = vec2(1.0-depth_uv_shadow.x, depth_uv_shadow.y); //x flipping needed for some reason???
 	
 	vec4 tex_albedo = textureLod(spot_tex, depth_uv, 0.0);
 	
 	//Attenuation due to normal alignment
-	float normal_mutliplier = clamp(dot(normal, cam_mat[2].xyz), 0.0, 1.0);
+	float normal_mutliplier = clamp(dot(normal, cam_mat[2].xyz), 0.0, 1.0); 
 	
 	bool outside_bounds = depth_uv.x < 0.0 || depth_uv.x > 1.0 || depth_uv.y < 0.0 || depth_uv.y > 1.0;
 	bool outside_depth_bounds = obj_pos.z > 1.0 || obj_pos.z < -1.0;
@@ -91,22 +93,25 @@ void fragment()
 	{
 		
 		//shadow mapping to prevent painting on occluded surfaces
-		vec3 l = cam_mat[2].xyz; //Light direction
-		float cosTheta = clamp(dot(normal, l), 0.0, 1.0);
-		float bias = 0.005*tan(acos(cosTheta));
-		bias = clamp(bias, 0, 0.012)*1.0;
+		/*vec3 l = cam_mat[2].xyz; //Light direction
+		float cosTheta = clamp(dot(normalize(normal), normalize(l)), 0.0, 1.0);
+		float bias = 0.5*tan(acos(cosTheta));
+		bias = clamp(bias, 0.1, 0.3); //try 0.1 constant*/
+		float bias = 0.25;
 	
-		float c = 80.0;
-		float mult = 0.0; //shadow multiplier
-		int divisor = 4;
+		//float c = 8.0; //80
+		float shadow_mult = 0.0; //shadow multiplier
+		/*int divisor = 4;
 		for (int i = 0; i < divisor; i++) //sample x random positions on the shadow map
 		{
-			vec2 offset = vec2(rand(SCREEN_UV+float(i)*-0.7+vec2(0,TIME*0.1)), rand(SCREEN_UV+1.0+0.9*float(i)-TIME)) * 0.0025;
-			float d = texture(depth_tex, depth_uv + offset, 0).r * 2.0 - 1.0; //convert depth to NDC		
-			mult += clamp(exp(-c*obj_pos.z)*exp(c*d), 0.0, 1.0);//smoothstep(obj_pos.z - bias,obj_pos.z, d); //smooth shadows
+			vec2 offset = vec2(rand(UV+float(i)*-0.7+vec2(0,TIME*0.1)), rand(UV+1.0+0.9*float(i)-TIME)) * 0.0025;
+			float d = texture(depth_tex, depth_uv_shadow + offset, 0).r * 2.0 - 1.0; //convert depth to NDC		
+			shadow_mult += smoothstep(obj_pos.z - bias,obj_pos.z, d); //smooth shadows
 		}
-		mult /= float(divisor);
-
+		shadow_mult /= float(divisor);*/
+		
+		float d = texture(depth_tex, depth_uv_shadow, 0).r * 2.0 - 1.0;
+		shadow_mult = step(obj_pos.z - bias, d);
 		
 		if (!decal) //Paint brush
 		{
@@ -117,7 +122,7 @@ void fragment()
 			float multiplier = 1.0;
 			
 			//Obey normals and shadows
-			multiplier *= normal_mutliplier * mult;
+			multiplier *= normal_mutliplier * shadow_mult;
 			
 			//Read the brush texture
 			vec4 brush_value = texture(brush_tex, vec2(2.0 * length(depth_uv - vec2(0.5)), 0));
@@ -125,7 +130,7 @@ void fragment()
 			COLOR = color * brush_value * vec4(vec3(1.0), multiplier);
 		}
 		else //Paint decal texture
-			COLOR = vec4(vec3(1.0), normal_mutliplier * mult) * tex_albedo * color;
+			COLOR = vec4(vec3(1.0), normal_mutliplier * shadow_mult) * tex_albedo * color;
 	}
 
 }

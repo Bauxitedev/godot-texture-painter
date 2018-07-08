@@ -24,6 +24,11 @@ func _process(delta):
 	# this prevents the depth quad disappearing due to falling outside the depth buffer range
 	camera_slave.get_node("depth_quad").translation.z = (camera.near + camera.far) / -2.0
 	
+	# this forces a viewport redraw
+	# TODO new viewport is slow since it's drawing the object at 2048x2048 and then again at main res.
+	# only update the viewport when camera transform/fov/near/far changes
+	$textures/depth_buffer.render_target_update_mode = Viewport.UPDATE_ONCE
+	
 
 func _on_ViewportUI_gui_input(ev):
 	state_machine.handle_input(ev)
