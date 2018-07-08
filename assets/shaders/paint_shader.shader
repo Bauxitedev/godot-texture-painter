@@ -5,6 +5,7 @@ uniform sampler2D meshtex_normal;
 
 uniform sampler2D brush_tex; //Brush gradient
 uniform sampler2D spot_tex; //Decal texture
+uniform sampler2D depth_tex; //Stores the depth buffer, used for shadow mapping
 uniform mat4 cam_mat;
 
 uniform float fovy_degrees = 45;
@@ -44,6 +45,9 @@ mat4 get_projection_matrix()
 	return matrix;
 }
 
+float rand(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
 
 void fragment()
 {
@@ -69,6 +73,7 @@ void fragment()
 	depth_uv = 2.0 * depth_uv - 1.0;
 	depth_uv *= scale;
 	depth_uv = 0.5 + 0.5 * depth_uv;
+	depth_uv = vec2(1.0-depth_uv.x, depth_uv.y); //x flipping needed for some reason???
 	
 	vec4 tex_albedo = textureLod(spot_tex, depth_uv, 0.0);
 	
@@ -84,6 +89,25 @@ void fragment()
 	}
 	else
 	{
+		
+		//shadow mapping to prevent painting on occluded surfaces
+		vec3 l = cam_mat[2].xyz; //Light direction
+		float cosTheta = clamp(dot(normal, l), 0.0, 1.0);
+		float bias = 0.005*tan(acos(cosTheta));
+		bias = clamp(bias, 0, 0.012)*1.0;
+	
+		float c = 80.0;
+		float mult = 0.0; //shadow multiplier
+		int divisor = 4;
+		for (int i = 0; i < divisor; i++) //sample x random positions on the shadow map
+		{
+			vec2 offset = vec2(rand(SCREEN_UV+float(i)*-0.7+vec2(0,TIME*0.1)), rand(SCREEN_UV+1.0+0.9*float(i)-TIME)) * 0.0025;
+			float d = texture(depth_tex, depth_uv + offset, 0).r * 2.0 - 1.0; //convert depth to NDC		
+			mult += clamp(exp(-c*obj_pos.z)*exp(c*d), 0.0, 1.0);//smoothstep(obj_pos.z - bias,obj_pos.z, d); //smooth shadows
+		}
+		mult /= float(divisor);
+
+		
 		if (!decal) //Paint brush
 		{
 			//Gonna disable AA for now because of the outline bug
@@ -92,8 +116,8 @@ void fragment()
 				
 			float multiplier = 1.0;
 			
-			//Obey normals
-			multiplier *= normal_mutliplier;
+			//Obey normals and shadows
+			multiplier *= normal_mutliplier * mult;
 			
 			//Read the brush texture
 			vec4 brush_value = texture(brush_tex, vec2(2.0 * length(depth_uv - vec2(0.5)), 0));
@@ -101,7 +125,7 @@ void fragment()
 			COLOR = color * brush_value * vec4(vec3(1.0), multiplier);
 		}
 		else //Paint decal texture
-			COLOR = vec4(vec3(1.0), normal_mutliplier) * tex_albedo * color;
+			COLOR = vec4(vec3(1.0), normal_mutliplier * mult) * tex_albedo * color;
 	}
 
 }

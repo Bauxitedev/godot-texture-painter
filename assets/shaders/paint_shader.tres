@@ -1,8 +1,14 @@
-[gd_resource type="ShaderMaterial" load_steps=6 format=2]
+[gd_resource type="ShaderMaterial" load_steps=7 format=2]
 
 [ext_resource path="res://assets/shaders/paint_shader.shader" type="Shader" id=1]
 [ext_resource path="res://assets/shaders/brush_gradient.tres" type="Texture" id=2]
 [ext_resource path="res://assets/textures/logo.svg" type="Texture" id=3]
+
+[sub_resource type="ViewportTexture" id=3]
+
+resource_local_to_scene = true
+flags = 0
+viewport_path = NodePath("textures/depth_buffer")
 
 [sub_resource type="ViewportTexture" id=1]
 
@@ -34,5 +40,6 @@ shader_param/meshtex_pos = SubResource( 2 )
 shader_param/meshtex_normal = SubResource( 1 )
 shader_param/brush_tex = ExtResource( 2 )
 shader_param/spot_tex = ExtResource( 3 )
+shader_param/depth_tex = SubResource( 3 )
 _sections_unfolded = [ "Resource", "shader_param" ]
 
