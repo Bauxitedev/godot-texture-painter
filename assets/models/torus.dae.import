@@ -7,10 +7,7 @@ path="res://.import/torus.dae-9a7560d1230c7fc935599fa4a0426e53.scn"
 [deps]
 
 source_file="res://assets/models/torus.dae"
-source_md5="e3d5ea90693ce494b9c9a314471db178"
-
 dest_files=[ "res://.import/torus.dae-9a7560d1230c7fc935599fa4a0426e53.scn" ]
-dest_md5="49b6f1baaab5052c12a468b8e5ac7593"
 
 [params]
 

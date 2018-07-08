@@ -7,10 +7,7 @@ path="res://.import/suzanne_uv.dae-d64840405ca2d6975bb6abc946b50c45.scn"
 [deps]
 
 source_file="res://assets/models/suzanne_uv.dae"
-source_md5="0a05d2873b7d1db0ee1a3bc217c5769b"
-
 dest_files=[ "res://.import/suzanne_uv.dae-d64840405ca2d6975bb6abc946b50c45.scn" ]
-dest_md5="b96c844bc8a1e8fca2afd8876d0aa76b"
 
 [params]
 

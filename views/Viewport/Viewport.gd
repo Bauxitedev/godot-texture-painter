@@ -9,6 +9,21 @@ func _process(delta):
 		PainterState.store_textures_on_disk("res://export/")
 	
 	state_machine.update(delta)
+	
+	# update the camera slave to match the actual camera
+	
+	var camera_slave = $textures/depth_buffer/cam_slave
+	var camera = $spatial/camroot/cam
+	
+	camera_slave.global_transform = camera.global_transform
+	camera_slave.fov = camera.fov
+	camera_slave.near = camera.near
+	camera_slave.far = camera.far
+	
+	# set depth_quad distance to camera to average of znear and zfar
+	# this prevents the depth quad disappearing due to falling outside the depth buffer range
+	camera_slave.get_node("depth_quad").translation.z = (camera.near + camera.far) / -2.0
+	
 
 func _on_ViewportUI_gui_input(ev):
 	state_machine.handle_input(ev)

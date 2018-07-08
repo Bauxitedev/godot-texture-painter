@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://views/Viewport/Viewport.gd" type="Script" id=1]
 [ext_resource path="res://textures/textures.gd" type="Script" id=2]
@@ -6,14 +6,15 @@
 [ext_resource path="res://textures/mesh/base.tscn" type="PackedScene" id=4]
 [ext_resource path="res://textures/mesh/position.gd" type="Script" id=5]
 [ext_resource path="res://textures/mesh/normal.gd" type="Script" id=6]
-[ext_resource path="res://views/Viewport/InputStates.gd" type="Script" id=7]
-[ext_resource path="res://views/Viewport/Paint.gd" type="Script" id=8]
-[ext_resource path="res://views/Viewport/Rotate.gd" type="Script" id=9]
-[ext_resource path="res://views/Viewport/Zoom.gd" type="Script" id=10]
-[ext_resource path="res://views/Viewport/Pan.gd" type="Script" id=11]
-[ext_resource path="res://views/Viewport/BrushResize.gd" type="Script" id=12]
-[ext_resource path="res://views/Viewport/BrushSoftnessChange.gd" type="Script" id=13]
-[ext_resource path="res://views/Viewport/ColorPick.gd" type="Script" id=14]
+[ext_resource path="res://assets/shaders/depth_buffer_shader.tres" type="Material" id=7]
+[ext_resource path="res://views/Viewport/InputStates.gd" type="Script" id=8]
+[ext_resource path="res://views/Viewport/Paint.gd" type="Script" id=9]
+[ext_resource path="res://views/Viewport/Rotate.gd" type="Script" id=10]
+[ext_resource path="res://views/Viewport/Zoom.gd" type="Script" id=11]
+[ext_resource path="res://views/Viewport/Pan.gd" type="Script" id=12]
+[ext_resource path="res://views/Viewport/BrushResize.gd" type="Script" id=13]
+[ext_resource path="res://views/Viewport/BrushSoftnessChange.gd" type="Script" id=14]
+[ext_resource path="res://views/Viewport/ColorPick.gd" type="Script" id=15]
 
 [sub_resource type="ProceduralSky" id=1]
 
@@ -115,6 +116,11 @@ adjustment_brightness = 1.0
 adjustment_contrast = 1.0
 adjustment_saturation = 1.0
 _sections_unfolded = [ "Background", "Glow", "Glow/levels", "Tonemap" ]
+
+[sub_resource type="QuadMesh" id=10]
+
+custom_aabb = AABB( 0, 0, 0, 0, 0, 0 )
+size = Vector2( 100, 100 )
 
 [sub_resource type="ArrayMesh" id=3]
 
@@ -218,6 +224,12 @@ uv2_triplanar_sharpness = 1.0
 proximity_fade_enable = false
 distance_fade_enable = false
 _sections_unfolded = [ "Albedo", "Emission", "Flags", "Metallic", "Parameters", "Resource", "Roughness", "Vertex Color" ]
+
+[sub_resource type="ViewportTexture" id=9]
+
+resource_local_to_scene = true
+flags = 0
+viewport_path = NodePath("textures/depth_buffer")
 
 [node name="main" type="WorldEnvironment" index="0"]
 
@@ -424,37 +436,97 @@ disable_3d = true
 usage = 3
 script = ExtResource( 6 )
 
+[node name="depth_buffer" type="Viewport" parent="textures" index="2"]
+
+arvr = false
+size = Vector2( 1024, 1024 )
+own_world = false
+world = null
+transparent_bg = false
+msaa = 0
+hdr = true
+disable_3d = false
+usage = 2
+debug_draw = 0
+render_target_v_flip = true
+render_target_clear_mode = 0
+render_target_update_mode = 2
+audio_listener_enable_2d = false
+audio_listener_enable_3d = false
+physics_object_picking = false
+gui_disable_input = false
+gui_snap_controls_to_pixels = true
+shadow_atlas_size = 0
+shadow_atlas_quad_0 = 2
+shadow_atlas_quad_1 = 2
+shadow_atlas_quad_2 = 3
+shadow_atlas_quad_3 = 4
+_sections_unfolded = [ "Render Target", "Rendering" ]
+
+[node name="cam_slave" type="Camera" parent="textures/depth_buffer" index="0"]
+
+keep_aspect = 1
+cull_mask = 1048575
+environment = null
+h_offset = 0.0
+v_offset = 0.0
+doppler_tracking = 0
+projection = 0
+current = false
+fov = 70.0
+size = 1.0
+near = 0.05
+far = 100.0
+_sections_unfolded = [ "Transform" ]
+
+[node name="depth_quad" type="MeshInstance" parent="textures/depth_buffer/cam_slave" index="0"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20 )
+layers = 2
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 10 )
+skeleton = NodePath("..")
+material/0 = ExtResource( 7 )
+_sections_unfolded = [ "Geometry", "Transform", "material" ]
+
 [node name="InputStates" type="Node" parent="." index="1"]
-
-script = ExtResource( 7 )
-
-[node name="Paint" type="Node" parent="InputStates" index="0"]
 
 script = ExtResource( 8 )
 
-[node name="Rotate" type="Node" parent="InputStates" index="1"]
+[node name="Paint" type="Node" parent="InputStates" index="0"]
 
 script = ExtResource( 9 )
 
-[node name="Zoom" type="Node" parent="InputStates" index="2"]
+[node name="Rotate" type="Node" parent="InputStates" index="1"]
 
 script = ExtResource( 10 )
 
-[node name="Pan" type="Node" parent="InputStates" index="3"]
+[node name="Zoom" type="Node" parent="InputStates" index="2"]
 
 script = ExtResource( 11 )
 
-[node name="BrushResize" type="Node" parent="InputStates" index="4"]
+[node name="Pan" type="Node" parent="InputStates" index="3"]
 
 script = ExtResource( 12 )
 
-[node name="BrushSoftnessChange" type="Node" parent="InputStates" index="5"]
+[node name="BrushResize" type="Node" parent="InputStates" index="4"]
 
 script = ExtResource( 13 )
 
-[node name="ColorPick" type="Node" parent="InputStates" index="6"]
+[node name="BrushSoftnessChange" type="Node" parent="InputStates" index="5"]
 
 script = ExtResource( 14 )
+
+[node name="ColorPick" type="Node" parent="InputStates" index="6"]
+
+script = ExtResource( 15 )
 
 [node name="spatial" type="Node" parent="." index="2"]
 
@@ -483,7 +555,7 @@ _sections_unfolded = [ "Transform" ]
 
 transform = Transform( -1.62936e-07, 0, -1.0001, 0, 1, 0, 1.0001, 0, -1.62936e-07, -4, 0, 0 )
 keep_aspect = 1
-cull_mask = 1048575
+cull_mask = 1048573
 environment = null
 h_offset = 0.0
 v_offset = 0.0
@@ -523,5 +595,24 @@ directional_shadow_bias_split_scale = 0.25
 directional_shadow_depth_range = 0
 directional_shadow_max_distance = 200.0
 _sections_unfolded = [ "Light" ]
+
+[node name="debug_todo_remove_this" type="TextureRect" parent="." index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 100.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = SubResource( 9 )
+expand = true
+stretch_mode = 6
+_sections_unfolded = [ "Rect" ]
 
 
