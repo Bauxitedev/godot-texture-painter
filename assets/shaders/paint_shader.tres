@@ -32,6 +32,7 @@ shader_param/fovy_degrees = 70.0
 shader_param/z_near = 0.05
 shader_param/z_far = 100.0
 shader_param/aspect = 1.0
+shader_param/aspect_shadow = null
 shader_param/mouse_pos = null
 shader_param/decal = null
 shader_param/scale = 8.0

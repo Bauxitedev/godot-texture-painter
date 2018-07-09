@@ -40,9 +40,15 @@ func _ready():
 func _on_filemenu_index_pressed(index):
 	match index:
 		# TODO show a FileDialog here
-		0: paint_viewport.get_node("main").change_mesh(preload("res://assets/models/Torus.mesh"))
-		1: get_tree().quit()
+		0: clear_viewports()
+		1: paint_viewport.get_node("main").change_mesh(preload("res://assets/models/Torus.mesh"))
+		2: get_tree().quit()
 
+func clear_viewports():
+	var vps = [PainterState.viewports.albedo, PainterState.viewports.roughness, PainterState.viewports.metalness, PainterState.viewports.emission]
+	for vp in vps:
+		vp.render_target_clear_mode = Viewport.CLEAR_MODE_ONLY_NEXT_FRAME
+	
 func _on_ColorPickerButton_color_changed(color):
 	PainterState.brush.color = color
 

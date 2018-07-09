@@ -98,20 +98,24 @@ void fragment()
 		float cosTheta = clamp(dot(normalize(normal), normalize(l)), 0.0, 1.0);
 		float bias = 0.005*tan(acos(cosTheta));
 		bias = clamp(bias, 0.0, 0.01); 
+		
+		float transition_area = 0.01; //for smooth shadows
 	
-		//float c = 8.0; //80
+		//float c = 80.0; //180 is too much, but 80 is not good enough when painting from far away
 		float shadow_mult = 0.0; //shadow multiplier
-		/*int divisor = 4;
+		int divisor = 4;
 		for (int i = 0; i < divisor; i++) //sample x random positions on the shadow map
 		{
-			vec2 offset = vec2(rand(UV+float(i)*-0.7+vec2(0,TIME*0.1)), rand(UV+1.0+0.9*float(i)-TIME)) * 0.0025;
+			vec2 offset = vec2(rand(UV+float(i)*-0.7+vec2(0,TIME*0.1)), rand(UV+1.0+0.9*float(i)-TIME)) * 0.007;
+			//TODO offset should abide by aspect_shadow
 			float d = texture(depth_tex, depth_uv_shadow + offset, 0).r * 2.0 - 1.0; //convert depth to NDC		
-			shadow_mult += smoothstep(obj_pos.z - bias,obj_pos.z, d); //smooth shadows
+			//shadow_mult += clamp(exp(-c*obj_pos.z)*exp(c*d), 0.0, 1.0); //(exponential-ish) is nicely smooth but TOO smooth (allows painting through surfaces)
+			shadow_mult += smoothstep(obj_pos.z - bias - transition_area, obj_pos.z - bias + transition_area, d); //smooth shadows 
 		}
-		shadow_mult /= float(divisor);*/
+		shadow_mult /= float(divisor);
 		
-		float d = pow(texture(depth_tex, depth_uv_shadow, 0).r, 1.0) * 2.0 - 1.0;
-		shadow_mult = step(obj_pos.z - bias, d);
+		/*float d = texture(depth_tex, depth_uv_shadow, 0).r * 2.0 - 1.0;
+		shadow_mult = smoothstep(obj_pos.z - bias, obj_pos.z, d);*/
 		
 		if (!decal) //Paint brush
 		{
