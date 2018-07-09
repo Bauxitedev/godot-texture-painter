@@ -11,7 +11,8 @@ uniform mat4 cam_mat;
 uniform float fovy_degrees = 45;
 uniform float z_near = 0.01;
 uniform float z_far = 60.0;
-uniform float aspect = 1.0;
+uniform float aspect = 1.0; //Keep at 1 for now or brush gets stretched
+uniform float aspect_shadow = 1.0; //W/H of the depth buffer
 
 uniform vec2 mouse_pos;
 uniform bool decal;
@@ -74,7 +75,7 @@ void fragment()
 	depth_uv *= scale;
 	depth_uv = 0.5 + 0.5 * depth_uv;
 	
-	vec2 depth_uv_shadow = 0.5 + 0.5 * obj_pos.xy;
+	vec2 depth_uv_shadow = 0.5 + 0.5 * (obj_pos.xy / vec2(aspect_shadow, 1.0));
 	depth_uv_shadow = vec2(1.0-depth_uv_shadow.x, depth_uv_shadow.y); //x flipping needed for some reason???
 	
 	vec4 tex_albedo = textureLod(spot_tex, depth_uv, 0.0);

@@ -3,6 +3,8 @@ extends Node
 var should_paint = false
 var should_paint_decal = false
 
+onready var parent_viewport = get_parent().get_parent()
+
 enum Slot {
 	ALBEDO,
 	ROUGHNESS,
@@ -39,6 +41,7 @@ func update_shaders(mouse_pos, size, cam, color):
 		mat.set_shader_param("fovy_degrees", cam.fov)
 		mat.set_shader_param("mouse_pos", mouse_pos)
 		mat.set_shader_param("aspect", 1.0) # Don't change this or your brush gets skewed!
+		mat.set_shader_param("aspect_shadow", float(parent_viewport.size.x) / parent_viewport.size.y)
 		mat.set_shader_param("decal", should_paint_decal)
 		mat.set_shader_param("color", color)
 	

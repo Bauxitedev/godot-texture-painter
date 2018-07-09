@@ -1,7 +1,8 @@
 extends WorldEnvironment
 
 onready var state_machine = $InputStates
-
+onready var parent_viewport = get_parent()
+onready var depth_buffer = $textures/depth_buffer
 
 func _process(delta):
 	
@@ -10,11 +11,12 @@ func _process(delta):
 	
 	state_machine.update(delta)
 	
-	# update the camera slave to match the actual camera
+	# update depth buffer size to match parent viewport
+	depth_buffer.size = parent_viewport.size
 	
+	# update the camera slave to match the actual camera
 	var camera_slave = $textures/depth_buffer/cam_slave
 	var camera = $spatial/camroot/cam
-	
 	camera_slave.global_transform = camera.global_transform
 	camera_slave.fov = camera.fov
 	camera_slave.near = camera.near
@@ -25,10 +27,10 @@ func _process(delta):
 	camera_slave.get_node("depth_quad").translation.z = (camera.near + camera.far) / -2.0
 	
 	# this forces a viewport redraw
-	# TODO new viewport is slow since it's drawing the object at 2048x2048 and then again at main res.
+	# TODO new viewport is slow since it's drawing the object TWICE, once in main buffer and once in depth buffer.
 	# only update the viewport when camera transform/fov/near/far changes
-	$textures/depth_buffer.render_target_update_mode = Viewport.UPDATE_ONCE
-	
+	# depth_buffer.render_target_update_mode = Viewport.UPDATE_ONCE
+	# Update - new bug appeared! when viewport is thin and you change znear, the viewport doesn't clear itself anymore
 
 func _on_ViewportUI_gui_input(ev):
 	state_machine.handle_input(ev)
