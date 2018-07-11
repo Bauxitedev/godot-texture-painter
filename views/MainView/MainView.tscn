@@ -122,10 +122,7 @@ group = null
 text = "File"
 flat = true
 align = 1
-items = [
-"New...", null, 0, false, false, -1, 0, null, "", false, 
-"Load mesh...", null, 0, false, false, -1, 0, null, "", false, 
-"Quit", null, 0, false, false, -1, 0, null, "", false ]
+items = [ "New...", null, 0, false, false, -1, 0, null, "", false, "Open...", null, 0, false, false, -1, 0, null, "", false, "Save", null, 0, false, false, -1, 0, null, "", false, "Save as...", null, 0, false, false, -1, 0, null, "", false, "Load mesh...", null, 0, false, false, -1, 0, null, "", false, "Quit", null, 0, false, false, -1, 0, null, "", false ]
 _sections_unfolded = [ "Size Flags", "Theme" ]
 
 [node name="OptionsMenu" type="MenuButton" parent="View/MenuBar" index="1"]
