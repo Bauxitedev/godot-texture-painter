@@ -60,12 +60,12 @@ func create_save_tree():
 	# Create the data structure which will be serialized
 	
 	var save_root = Node.new()
-	save_root.name = "Texture Painter Save File"
+	save_root.name = "save"
 	
 	# Save format version
 	
 	var save_version_root = Node.new()
-	save_version_root.name = "Version"
+	save_version_root.name = "version"
 	
 	var save_version = Node.new()
 	save_version.name = "1"
@@ -78,15 +78,40 @@ func create_save_tree():
 	# Save texture slots in the form of sprites
 	
 	var save_slots = Node.new()
-	save_slots.name = "Slots"
+	save_slots.name = "slots"
 	
 	save_root.add_child(save_slots)
 	save_slots.owner = save_root	
 	
-	var slots = ["Albedo", "Roughness", "Metalness", "Emission"]
+	var slots = paint_viewport.get_node("main/textures/paint").get_children()
+	
+	var skip = false #just for debugging...
+	
 	for slot in slots:
+		
+		if skip:
+			break
+			
+		skip = true
+		
 		var save_slot = Sprite.new()
-		save_slot.name = slot
+		save_slot.name = slot.name
+		
+		# Convert ViewportTexture to ImageTexture
+		var vp_texture = slot.get_texture()
+		var vp_img = vp_texture.get_data()
+		var img_texture = ImageTexture.new()
+		img_texture.create_from_image(vp_img)
+		var img_texture_format = img_texture.get_format()  # format is 15 which is RGBAH (16-bit float RGBA)
+		var img_compressed = vp_img.is_compressed() # NOT compressed
+		save_slot.texture = img_texture
+		
+		# TODO it seems the format is wrong? It's saving the texture in compressed format for some reason.
+		# TODO convert it to RGBA uncompressed 32-bit (16-bit might not be properly saved)
+		# go save as tscn and debug it (but - it's 300mb!!!)
+		# ALSO the "image" slot of the "ImageTexture" is null in the saved file. Why???
+		# maybe relevant https://github.com/godotengine/godot/issues/8465
+		
 		save_slots.add_child(save_slot)
 		save_slot.owner = save_root
 		
@@ -106,6 +131,8 @@ func save_image():
 	# Create the data structure 
 	var save_root = create_save_tree()
 	
+	
+	
 	# Save it to file
 	var filename = dialog.current_path
 	if !filename.ends_with(save_extension):
@@ -114,7 +141,7 @@ func save_image():
 	var pack = PackedScene.new()
 	var result = pack.pack(save_root)
 	if result == OK:
-		result = ResourceSaver.save(filename, pack, ResourceSaver.FLAG_BUNDLE_RESOURCES) 
+		result = ResourceSaver.save(filename, pack)#, ResourceSaver.FLAG_BUNDLE_RESOURCES) 
 		if result == OK:
 			print("Saved to %s!" % filename)
 			return
