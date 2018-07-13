@@ -55,8 +55,72 @@ func open_image():
 	print("TODO load image")
 	pass
 	
+func create_save_tree():
+	
+	# Create the data structure which will be serialized
+	
+	var save_root = Node.new()
+	save_root.name = "Texture Painter Save File"
+	
+	# Save format version
+	
+	var save_version_root = Node.new()
+	save_version_root.name = "Version"
+	
+	var save_version = Node.new()
+	save_version.name = "1"
+	
+	save_version_root.add_child(save_version)
+	save_root.add_child(save_version_root)
+	save_version.owner = save_root
+	save_version_root.owner = save_root
+	
+	# Save texture slots in the form of sprites
+	
+	var save_slots = Node.new()
+	save_slots.name = "Slots"
+	
+	save_root.add_child(save_slots)
+	save_slots.owner = save_root	
+	
+	var slots = ["Albedo", "Roughness", "Metalness", "Emission"]
+	for slot in slots:
+		var save_slot = Sprite.new()
+		save_slot.name = slot
+		save_slots.add_child(save_slot)
+		save_slot.owner = save_root
+		
+	return save_root
+	
 func save_image():
-	print("TODO save image")
+	
+	var save_extension = ".tscn"	
+	
+	# Get save path
+	var dialog = FileDialog.new()
+	dialog.add_filter("*%s;Texture Painter Save File" % save_extension)
+	add_child(dialog)
+	dialog.popup_centered_ratio(0.75)
+	yield(dialog, "file_selected")
+	
+	# Create the data structure 
+	var save_root = create_save_tree()
+	
+	# Save it to file
+	var filename = dialog.current_path
+	if !filename.ends_with(save_extension):
+		filename += save_extension
+	
+	var pack = PackedScene.new()
+	var result = pack.pack(save_root)
+	if result == OK:
+		result = ResourceSaver.save(filename, pack, ResourceSaver.FLAG_BUNDLE_RESOURCES) 
+		if result == OK:
+			print("Saved to %s!" % filename)
+			return
+	
+	print("Save to %s failed" % filename)
+
 	
 func _on_ColorPickerButton_color_changed(color):
 	PainterState.brush.color = color
