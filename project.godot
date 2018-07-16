@@ -18,7 +18,6 @@ config/icon="res://icon.png"
 
 PainterState="*res://autoloads/PainterState.gd"
 SaveManager="*res://autoloads/SaveManager.cs"
-SaveArg="*res://autoloads/SaveArg.cs"
 
 [display]
 
