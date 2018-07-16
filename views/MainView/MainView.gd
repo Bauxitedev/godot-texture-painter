@@ -2,6 +2,7 @@ extends Control
 
 onready var paint_viewport = $View/MainFrame/LeftPanel/PaintViewport/ViewportContainer/Viewport
 onready var cam = paint_viewport.get_node("main/spatial/camroot/cam")
+var save_extension = ".tpain" # Blame it on the a a a a a alcohol
 
 func _ready():
 	PainterState.brush.softness_slider = $View/MainFrame/RightPanel/Brush/Preview/softness_slider
@@ -47,17 +48,52 @@ func _on_filemenu_index_pressed(index):
 		5: get_tree().quit()
 
 func new_image():
-	var vps = [PainterState.viewports.albedo, PainterState.viewports.roughness, PainterState.viewports.metalness, PainterState.viewports.emission]
+	var vps = PainterState.viewports.values()
 	for vp in vps:
 		vp.render_target_clear_mode = Viewport.CLEAR_MODE_ONLY_NEXT_FRAME
 		
 func open_image():
-	print("TODO load image")
-	pass
+	
+	# Get load path
+	var dialog = FileDialog.new()
+	dialog.mode = FileDialog.MODE_OPEN_FILE
+	dialog.add_filter("*%s;Texture Painter Save File" % save_extension)
+	add_child(dialog)
+	dialog.popup_centered_ratio(0.75)
+	yield(dialog, "file_selected")
+	
+	new_image() 	
+	var textures = {}
+	var sprites = []
+	
+	# Read the ImageTextures and put them in a dictionary
+	var slots = SaveManager.Load(ProjectSettings.globalize_path(dialog.current_path))
+	for slot_name in slots:
+		var tex = SaveManager.GetTexture(slot_name)
+		textures[slot_name] = tex
+	SaveManager.ClearTextures()
+	
+	# Add sprites to the viewports
+	for t in textures:
+		var spr = Sprite.new() # TODO extract this to a method and ensure viewport size is changed to match
+		spr.texture = ImageTexture.new()
+		spr.texture.create_from_image(textures[t].image) # needed for some god forsaken reason??? doubles RAM usage!
+		spr.name = t
+		spr.centered = false
+		PainterState.viewports[t].add_child(spr)
+		sprites.push_back(spr)
+
+	# Wait a bit so the viewport has time to draw the sprites and clear the viewport
+	yield(get_tree(), "idle_frame")
+	yield(get_tree(), "idle_frame")
+		
+	# Remove the sprites
+	for spr in sprites:
+		spr.get_parent().remove_child(spr)
+		
 
 func save_image():
 	
-	var save_extension = ".tpain" # Blame it on the a a a a a alcohol
 	
 	# Get save path
 	var dialog = FileDialog.new()
@@ -73,16 +109,15 @@ func save_image():
 	
 	# Convert ViewportTextures to ImageTextures and save 'em
 	SaveManager.ClearTextures()	
-	var vps = [PainterState.viewports.albedo, PainterState.viewports.roughness, PainterState.viewports.metalness, PainterState.viewports.emission]
+	var vps = PainterState.viewports.values()
 	for vp in vps:
 		var vp_texture = vp.get_texture()
 		var vp_img = vp_texture.get_data()
 		var img_texture = ImageTexture.new()
 		img_texture.create_from_image(vp_img)
-		SaveManager.SetTexture(vp.name, img_texture) #hack since we cannot pass a dictionary from GDscript to C#
+		SaveManager.SetTexture(vp.name, img_texture) # hack since we cannot pass a dictionary from GDscript to C#
 	SaveManager.Save(ProjectSettings.globalize_path(filename))
-	
-	#print("Save to %s failed" % filename)
+
 
 	
 func _on_ColorPickerButton_color_changed(color):

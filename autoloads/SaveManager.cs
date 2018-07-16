@@ -5,13 +5,17 @@ using System.Diagnostics;
 using System.Runtime.Serialization.Formatters.Binary;
 using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
+using System.Linq;
 using File = System.IO.File;
 
 //Need to use C# for this because GDscript can't zip files yet
 
 public class SaveManager : Node
 {
+    //This dictionary temporarily stores either the textures we want to save, or the textures we want to load.
+    //Needed since Godot can't marshal dictionaries and arrays of resources yet.
     private static Dictionary<string, Texture> Textures = new Dictionary<string, Texture>();
+    private static string SlotsPrefix = "slots/";
 
     public void ClearTextures()
     {
@@ -21,6 +25,11 @@ public class SaveManager : Node
     public void SetTexture(string name, ImageTexture tex)
     {
         Textures[name] = tex;
+    }
+    
+    public Texture GetTexture(string name)
+    {
+        return Textures[name];
     }
     
     public void Save(string filename)
@@ -50,7 +59,7 @@ public class SaveManager : Node
 
                     GD.Print($"Compressing {name}...");
 
-                    zipStream.PutNextEntry(new ZipEntry($"slots/{name}") {DateTime = DateTime.Now});
+                    zipStream.PutNextEntry(new ZipEntry($"{SlotsPrefix}{name}") {DateTime = DateTime.Now});
                     var dictionary = texture.GetData().Data;
 
                     new BinaryFormatter().Serialize(zipStream, dictionary);
@@ -70,13 +79,13 @@ public class SaveManager : Node
         }
     }
 
-    public List<ImageTexture> Load(string filename)
+    public string[] Load(string filename)
     {
         
         GD.Print("load");
 
 
-        var textures = new List<ImageTexture>();
+        var textures = new Dictionary<string, Texture>();
 
         using (ZipInputStream s = new ZipInputStream(File.OpenRead(filename)))
         {
@@ -89,7 +98,7 @@ public class SaveManager : Node
                 GD.Print($"Compressed   : {entry.CompressedSize/1024.0/1024.0}MB");
 
                 if (!entry.IsFile) continue;
-                if (!entry.Name.StartsWith("slots/")) continue;
+                if (!entry.Name.StartsWith(SlotsPrefix)) continue;
 
                 var dict = (Dictionary<object, object>) new BinaryFormatter().Deserialize(s);
                 Debug.Assert(1 == s.Read(new byte[1], 0, 1)); //DO NOT REMOVE THIS! REQUIRED!!!
@@ -97,14 +106,13 @@ public class SaveManager : Node
                 ImageTexture tex = new ImageTexture();
                 tex.CreateFromImage(new Image {Data = dict});
                 
-                textures.Add(tex);
+                textures.Add(entry.Name.Replace(SlotsPrefix, ""), tex);
 
             }
         }
-   
 
-        GD.Print("Done loading zip stuff");
 
-        return textures;
+        Textures = textures; //MASSIVE hack
+        return textures.Keys.ToArray(); //MASSIVE hack (needed since marshalling doesn't support dictionaries yet)
     }
 }
