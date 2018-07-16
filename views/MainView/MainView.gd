@@ -54,72 +54,10 @@ func new_image():
 func open_image():
 	print("TODO load image")
 	pass
-	
-func create_save_tree():
-	
-	# Create the data structure which will be serialized
-	
-	var save_root = Node.new()
-	save_root.name = "save"
-	
-	# Save format version
-	
-	var save_version_root = Node.new()
-	save_version_root.name = "version"
-	
-	var save_version = Node.new()
-	save_version.name = "1"
-	
-	save_version_root.add_child(save_version)
-	save_root.add_child(save_version_root)
-	save_version.owner = save_root
-	save_version_root.owner = save_root
-	
-	# Save texture slots in the form of sprites
-	
-	var save_slots = Node.new()
-	save_slots.name = "slots"
-	
-	save_root.add_child(save_slots)
-	save_slots.owner = save_root	
-	
-	var slots = paint_viewport.get_node("main/textures/paint").get_children()
-	
-	var skip = false #just for debugging...
-	
-	for slot in slots:
-		
-		if skip:
-			break
-			
-		skip = true
-		
-		var save_slot = Sprite.new()
-		save_slot.name = slot.name
-		
-		# Convert ViewportTexture to ImageTexture
-		var vp_texture = slot.get_texture()
-		var vp_img = vp_texture.get_data()
-		var img_texture = ImageTexture.new()
-		img_texture.create_from_image(vp_img)
-		var img_texture_format = img_texture.get_format()  # format is 15 which is RGBAH (16-bit float RGBA)
-		var img_compressed = vp_img.is_compressed() # NOT compressed
-		save_slot.texture = img_texture
-		
-		# TODO it seems the format is wrong? It's saving the texture in compressed format for some reason.
-		# TODO convert it to RGBA uncompressed 32-bit (16-bit might not be properly saved)
-		# go save as tscn and debug it (but - it's 300mb!!!)
-		# ALSO the "image" slot of the "ImageTexture" is null in the saved file. Why???
-		# maybe relevant https://github.com/godotengine/godot/issues/8465
-		
-		save_slots.add_child(save_slot)
-		save_slot.owner = save_root
-		
-	return save_root
-	
+
 func save_image():
 	
-	var save_extension = ".tscn"	
+	var save_extension = ".tpain" # Blame it on the a a a a a alcohol
 	
 	# Get save path
 	var dialog = FileDialog.new()
@@ -128,25 +66,23 @@ func save_image():
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
 	
-	# Create the data structure 
-	var save_root = create_save_tree()
-	
-	
-	
 	# Save it to file
 	var filename = dialog.current_path
 	if !filename.ends_with(save_extension):
 		filename += save_extension
 	
-	var pack = PackedScene.new()
-	var result = pack.pack(save_root)
-	if result == OK:
-		result = ResourceSaver.save(filename, pack)#, ResourceSaver.FLAG_BUNDLE_RESOURCES) 
-		if result == OK:
-			print("Saved to %s!" % filename)
-			return
+	# Convert ViewportTextures to ImageTextures and save 'em
+	SaveManager.ClearTextures()	
+	var vps = [PainterState.viewports.albedo, PainterState.viewports.roughness, PainterState.viewports.metalness, PainterState.viewports.emission]
+	for vp in vps:
+		var vp_texture = vp.get_texture()
+		var vp_img = vp_texture.get_data()
+		var img_texture = ImageTexture.new()
+		img_texture.create_from_image(vp_img)
+		SaveManager.SetTexture(vp.name, img_texture) #hack since we cannot pass a dictionary from GDscript to C#
+	SaveManager.Save(ProjectSettings.globalize_path(filename))
 	
-	print("Save to %s failed" % filename)
+	#print("Save to %s failed" % filename)
 
 	
 func _on_ColorPickerButton_color_changed(color):

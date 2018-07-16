@@ -17,6 +17,8 @@ config/icon="res://icon.png"
 [autoload]
 
 PainterState="*res://autoloads/PainterState.gd"
+SaveManager="*res://autoloads/SaveManager.cs"
+SaveArg="*res://autoloads/SaveArg.cs"
 
 [display]
 
@@ -47,6 +49,10 @@ paint_change_brush_softness=[ Object(InputEventKey,"resource_local_to_scene":fal
  ]
 open_color_picker=[ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":67,"unicode":0,"echo":false,"script":null)
  ]
+
+[mono]
+
+debugger_agent/port=50000
 
 [rendering]
 

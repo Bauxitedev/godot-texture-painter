@@ -7,11 +7,23 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 using File = System.IO.File;
 
+//Need to use C# for this because GDscript can't zip files yet
 
 public class SaveManager : Node
-{    
+{
+    private static Dictionary<string, Texture> Textures = new Dictionary<string, Texture>();
 
-    public void Save(Dictionary<string, Texture> textures, string filename)
+    public void ClearTextures()
+    {
+        Textures.Clear();
+    }
+    
+    public void SetTexture(string name, ImageTexture tex)
+    {
+        Textures[name] = tex;
+    }
+    
+    public void Save(string filename)
     {
 
         try
@@ -31,7 +43,7 @@ public class SaveManager : Node
                 writer.Flush(); //important (also DO NOT CLOSE the stream writer)
 
                 //Put texture slots
-                foreach (var pair in textures)
+                foreach (var pair in Textures)
                 {
                     var name = pair.Key;
                     var texture = pair.Value;
