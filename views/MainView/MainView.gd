@@ -154,8 +154,20 @@ func export_image():
 	Dialogs.remove_child(conf_dialog)
 	
 	# Finally save to PNG (TODO allow bitdepth control and other formats)
+	# BTW parallellization here brings export time from 2.2sec to 0.7sec
+	var time_start = OS.get_ticks_msec() / 1000.0
+	var threads = []
 	for f in files_to_save:
-		files_to_save[f].get_texture().get_data().save_png(f)
+		var t = Thread.new()
+		t.start(self, "thread_save_png", [files_to_save[f].get_texture().get_data(), f])
+		threads.push_back(t)
+	for t in threads:
+		t.wait_to_finish()
+	var time_end = OS.get_ticks_msec() / 1000.0
+	print("Exporting took %s sec" % (time_end - time_start))
+		
+func thread_save_png(userdata):
+	userdata[0].save_png(userdata[1])
 
 func load_mesh():
 	paint_viewport.get_node("main").change_mesh(preload("res://assets/models/Torus.mesh"))  # TODO show a FileDialog here
