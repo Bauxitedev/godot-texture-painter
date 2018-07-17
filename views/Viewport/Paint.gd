@@ -25,17 +25,18 @@ func update(delta):
 	if new_active_texture != -1:
 		PainterState.set_active_texture(new_active_texture)
 	
-	if Input.is_action_just_pressed("open_color_picker"):
-		state_machine.switch_state("ColorPick")
-		return
-	
-	if Input.is_action_pressed("paint_change_brush_softness"):
-		state_machine.switch_state("BrushSoftnessChange")
-		return
-	
-	if Input.is_action_pressed("paint_resize_brush"):
-		state_machine.switch_state("BrushResize")
-		return
+	if !Dialogs.any_dialog_open(): # This prevents triggering the color picker/brush size change when typing in filenames in save/load dialogs
+		if Input.is_action_just_pressed("open_color_picker"):
+			state_machine.switch_state("ColorPick")
+			return
+		
+		if Input.is_action_pressed("paint_change_brush_softness"):
+			state_machine.switch_state("BrushSoftnessChange")
+			return
+		
+		if Input.is_action_pressed("paint_resize_brush"):
+			state_machine.switch_state("BrushResize")
+			return
 	
 	rotate_cam(delta)
 	

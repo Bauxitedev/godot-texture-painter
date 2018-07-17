@@ -80,7 +80,7 @@ size_flags_vertical = 1
 split_offset = 0
 collapsed = false
 dragger_visibility = 2
-_sections_unfolded = [ "custom_constants" ]
+_sections_unfolded = [ "Anchor", "custom_constants" ]
 
 [node name="MenuBar" type="HBoxContainer" parent="View" index="0"]
 
@@ -122,7 +122,7 @@ group = null
 text = "File"
 flat = true
 align = 1
-items = [ "New...", null, 0, false, false, -1, 0, null, "", false, "Open...", null, 0, false, false, -1, 0, null, "", false, "Save", null, 0, false, false, -1, 0, null, "", false, "Save as...", null, 0, false, false, -1, 0, null, "", false, "Load mesh...", null, 0, false, false, -1, 0, null, "", false, "Quit", null, 0, false, false, -1, 0, null, "", false ]
+items = [ "New...", null, 0, false, false, -1, 0, null, "", false, "Open...", null, 0, false, false, -1, 0, null, "", false, "Save", null, 0, false, false, -1, 0, null, "", false, "Save as...", null, 0, false, false, -1, 0, null, "", false, "Load mesh...", null, 0, false, false, -1, 0, null, "", false, "Import...", null, 0, false, false, -1, 0, null, "", false, "Export...", null, 0, false, false, -1, 0, null, "", false, "Quit", null, 0, false, false, -1, 0, null, "", false ]
 _sections_unfolded = [ "Size Flags", "Theme" ]
 
 [node name="OptionsMenu" type="MenuButton" parent="View/MenuBar" index="1"]

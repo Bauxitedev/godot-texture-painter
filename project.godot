@@ -18,6 +18,7 @@ config/icon="res://icon.png"
 
 PainterState="*res://autoloads/PainterState.gd"
 SaveManager="*res://autoloads/SaveManager.cs"
+Dialogs="*res://autoloads/Dialogs.gd"
 
 [display]
 

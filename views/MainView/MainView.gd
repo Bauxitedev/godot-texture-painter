@@ -44,8 +44,10 @@ func _on_filemenu_index_pressed(index):
 		1: open_image()
 		2: save_image()
 		3: save_image() # TODO save as...
-		4: paint_viewport.get_node("main").change_mesh(preload("res://assets/models/Torus.mesh"))  # TODO show a FileDialog here
-		5: get_tree().quit()
+		4: load_mesh()
+		5: import_image()
+		6: export_image()
+		7: get_tree().quit()
 
 func new_image():
 	var vps = PainterState.viewports.values()
@@ -58,9 +60,10 @@ func open_image():
 	var dialog = FileDialog.new()
 	dialog.mode = FileDialog.MODE_OPEN_FILE
 	dialog.add_filter("*%s;Texture Painter Save File" % save_extension)
-	add_child(dialog)
+	Dialogs.add_child(dialog)
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
+	Dialogs.remove_child(dialog)
 	
 	new_image() 	
 	var textures = {}
@@ -98,9 +101,10 @@ func save_image():
 	# Get save path
 	var dialog = FileDialog.new()
 	dialog.add_filter("*%s;Texture Painter Save File" % save_extension)
-	add_child(dialog)
+	Dialogs.add_child(dialog)
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
+	Dialogs.remove_child(dialog)
 	
 	# Save it to file
 	var filename = dialog.current_path
@@ -118,7 +122,44 @@ func save_image():
 		SaveManager.SetTexture(vp.name, img_texture) # hack since we cannot pass a dictionary from GDscript to C#
 	SaveManager.Save(ProjectSettings.globalize_path(filename))
 
+func import_image():
+	print("TODO import image")
+	
+func export_image():
+	
+	# Get save path
+	var dialog = FileDialog.new()
+	Dialogs.add_child(dialog)
+	dialog.popup_centered_ratio(0.75)
+	yield(dialog, "file_selected")
+	Dialogs.remove_child(dialog)
+	
+	# Gather save filenames
+	var files_to_save = {}
+	for vp in PainterState.viewports.values():
+		files_to_save["%s_%s.png" % [dialog.current_path, vp.name]] = vp
+	
+	# Show confirmation dialog
+	var conf_dialog = ConfirmationDialog.new()
+	
+	var dialog_text = "This will save the following files:\n"
+	for f in files_to_save:
+		dialog_text += "\n · %s" % ProjectSettings.globalize_path(f)
+	dialog_text += "\n\nContinue?"
+	conf_dialog.dialog_text = dialog_text
+	
+	Dialogs.add_child(conf_dialog)
+	conf_dialog.popup_centered(Vector2(400,200))
+	yield(conf_dialog, "confirmed")
+	Dialogs.remove_child(conf_dialog)
+	
+	# Finally save to PNG (TODO allow bitdepth control and other formats)
+	for f in files_to_save:
+		files_to_save[f].get_texture().get_data().save_png(f)
 
+func load_mesh():
+	paint_viewport.get_node("main").change_mesh(preload("res://assets/models/Torus.mesh"))  # TODO show a FileDialog here
+	new_image()
 	
 func _on_ColorPickerButton_color_changed(color):
 	PainterState.brush.color = color
