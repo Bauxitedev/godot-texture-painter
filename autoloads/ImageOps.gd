@@ -13,6 +13,7 @@ func open_image():
 	var dialog = FileDialog.new()
 	dialog.mode = FileDialog.MODE_OPEN_FILE
 	dialog.add_filter("*%s;Texture Painter Save File" % save_extension)
+	dialog.access = FileDialog.ACCESS_FILESYSTEM
 	Dialogs.add_child(dialog)
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
@@ -67,6 +68,7 @@ func save_image():
 	# Get save path
 	var dialog = FileDialog.new()
 	dialog.add_filter("*%s;Texture Painter Save File" % save_extension)
+	dialog.access = FileDialog.ACCESS_FILESYSTEM
 	Dialogs.add_child(dialog)
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
@@ -131,6 +133,7 @@ func export_image():
 	# Get save path
 	var dialog = FileDialog.new()
 	Dialogs.add_child(dialog)
+	dialog.access = FileDialog.ACCESS_FILESYSTEM	
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
 	Dialogs.remove_child(dialog)

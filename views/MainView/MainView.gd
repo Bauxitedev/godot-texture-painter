@@ -10,7 +10,7 @@ func _ready():
 	PainterState.paint_viewport.cursor_node = $View/MainFrame/LeftPanel/PaintViewport/ViewportUI/Cursor
 	PainterState.paint_viewport.colorpicker_node = $View/MainFrame/LeftPanel/PaintViewport/ViewportUI/ColorPicker
 	
-	# Put the paint viewports in PainterState.viewports
+	# Put the paint viewports in PainterState.viewports and assign TextureRects
 	var paint_vps = paint_viewport.get_node("main/textures/paint").get_children()
 	for paint_vp in paint_vps:
 		var vp_name = paint_vp.name
@@ -45,7 +45,7 @@ func _on_filemenu_index_pressed(index):
 
 func load_mesh():
 	paint_viewport.get_node("main").change_mesh(preload("res://assets/models/Torus.mesh"))  # TODO show a FileDialog here
-	new_image()
+	ImageOps.new_image()
 	
 func _on_ColorPickerButton_color_changed(color):
 	PainterState.brush.color = color

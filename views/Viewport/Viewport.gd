@@ -12,6 +12,9 @@ func _process(delta):
 	if !Dialogs.any_dialog_open():
 		state_machine.update(delta)
 	
+	update_depth_buffer()
+	
+func update_depth_buffer():
 	# update depth buffer size to match parent viewport
 	depth_buffer.size = parent_viewport.size
 	
