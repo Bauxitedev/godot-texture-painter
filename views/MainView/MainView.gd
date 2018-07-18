@@ -65,9 +65,8 @@ func open_image():
 	yield(dialog, "file_selected")
 	Dialogs.remove_child(dialog)
 	
-	new_image() 	
+	new_image() 	# not technically needed but just to be sure
 	var textures = {}
-	var sprites = []
 	
 	# Read the ImageTextures and put them in a dictionary
 	var slots = SaveManager.Load(ProjectSettings.globalize_path(dialog.current_path))
@@ -76,15 +75,29 @@ func open_image():
 		textures[slot_name] = tex
 	SaveManager.ClearTextures()
 	
+	# Then put them into the viewports
+	put_textures_into_viewports(textures)
+		
+func put_textures_into_viewports(textures):
+	
+	var sprites = []
+	
 	# Add sprites to the viewports
-	for t in textures:
-		var spr = Sprite.new() # TODO extract this to a method and ensure viewport size is changed to match
+	for tex_name in textures:
+		
+		var spr = Sprite.new() 
+		var img = textures[tex_name].image
+		var vp = PainterState.viewports[tex_name]
+		
 		spr.texture = ImageTexture.new()
-		spr.texture.create_from_image(textures[t].image) # needed for some god forsaken reason??? doubles RAM usage!
-		spr.name = t
+		spr.texture.create_from_image(img) # needed for some god forsaken reason??? doubles RAM usage!
+		spr.name = tex_name
 		spr.centered = false
-		PainterState.viewports[t].add_child(spr)
 		sprites.push_back(spr)
+		
+		vp.size = Vector2(img.get_width(), img.get_height())
+		vp.add_child(spr)
+		vp.render_target_clear_mode = Viewport.CLEAR_MODE_ONLY_NEXT_FRAME
 
 	# Wait a bit so the viewport has time to draw the sprites and clear the viewport
 	yield(get_tree(), "idle_frame")
@@ -123,7 +136,42 @@ func save_image():
 	SaveManager.Save(ProjectSettings.globalize_path(filename))
 
 func import_image():
-	print("TODO import image")
+	
+	# Get load path
+	var dialog = FileDialog.new()
+	dialog.mode = FileDialog.MODE_OPEN_FILE
+	dialog.access = FileDialog.ACCESS_FILESYSTEM
+	dialog.add_filter("*.png;PNG image;*.jpg;JPG image")
+	Dialogs.add_child(dialog)
+	dialog.popup_centered_ratio(0.75)
+	yield(dialog, "file_selected")
+	Dialogs.remove_child(dialog)
+	
+	# Ask what slot we want to import to
+	var slot_dialog = AcceptDialog.new()
+	slot_dialog.dialog_text = "On what slot do you want to import the texture?"
+	for slot in PainterState.viewports:
+		slot_dialog.add_button(slot.capitalize(), true, slot)
+	Dialogs.add_child(slot_dialog)
+	slot_dialog.popup_centered(Vector2(400,100))
+	
+	# Delete the OK button
+	var ok = slot_dialog.get_ok()
+	ok.get_parent().remove_child(ok) 
+	
+	# Wait for user to pick a slot
+	var result = yield(slot_dialog, "custom_action")
+	Dialogs.remove_child(slot_dialog)
+	
+	# Import the image
+	var img = Image.new()
+	img.load(dialog.current_path)
+	var tex = ImageTexture.new()
+	tex.create_from_image(img)
+	
+	# Finally put the texture into that slot
+	put_textures_into_viewports({ result: tex })
+	
 	
 func export_image():
 	
