@@ -6,10 +6,11 @@ onready var depth_buffer = $textures/depth_buffer
 
 func _process(delta):
 	
-	if Input.is_key_pressed(KEY_F12):
+	if Input.is_key_pressed(KEY_F12): 
 		PainterState.store_textures_on_disk("res://export/")
 	
-	state_machine.update(delta)
+	if !Dialogs.any_dialog_open():
+		state_machine.update(delta)
 	
 	# update depth buffer size to match parent viewport
 	depth_buffer.size = parent_viewport.size
@@ -31,9 +32,11 @@ func _process(delta):
 	# only update the viewport when camera transform/fov/near/far changes
 	# depth_buffer.render_target_update_mode = Viewport.UPDATE_ONCE
 	# Update - new bug appeared! when viewport is thin and you change znear, the viewport doesn't clear itself anymore
+	# UPDATE2 - even after uncommenting this, the viewport still occasionally ends up in no-clear mode
 
 func _on_ViewportUI_gui_input(ev):
-	state_machine.handle_input(ev)
+	if !Dialogs.any_dialog_open():
+		state_machine.handle_input(ev)
 
 func _ready():
 	
