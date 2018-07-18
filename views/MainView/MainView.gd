@@ -10,24 +10,19 @@ func _ready():
 	PainterState.paint_viewport.cursor_node = $View/MainFrame/LeftPanel/PaintViewport/ViewportUI/Cursor
 	PainterState.paint_viewport.colorpicker_node = $View/MainFrame/LeftPanel/PaintViewport/ViewportUI/ColorPicker
 	
-	PainterState.viewports.albedo = paint_viewport.get_node("main/textures/paint/albedo")
-	PainterState.viewports.roughness = paint_viewport.get_node("main/textures/paint/roughness")
-	PainterState.viewports.metalness = paint_viewport.get_node("main/textures/paint/metalness")
-	PainterState.viewports.emission = paint_viewport.get_node("main/textures/paint/emission")
+	# Put the paint viewports in PainterState.viewports
+	var paint_vps = paint_viewport.get_node("main/textures/paint").get_children()
+	for paint_vp in paint_vps:
+		var vp_name = paint_vp.name
+		PainterState.viewports[vp_name] = paint_vp
+		var texture_rect = get_node("View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/%s/rect" % vp_name)
+		texture_rect.texture = paint_vp.get_texture()
+
+	# Put the utility viewports in PainterState.utility_viewports
+	var utility_vps = paint_viewport.get_node("main/textures/mesh").get_children()
+	for utility_vp in utility_vps:
+		PainterState.utility_viewports[utility_vp.name] = utility_vp
 	
-	PainterState.utility_viewports.position = paint_viewport.get_node("main/textures/mesh/position")
-	PainterState.utility_viewports.normal = paint_viewport.get_node("main/textures/mesh/normal")
-	
-	var albedo_rect = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/albedo/rect
-	var roughness_rect = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/roughness/rect
-	var metalness_rect = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/metalness/rect
-	var emission_rect = $View/MainFrame/LeftPanel/BottomPanel/HBoxContainer/emission/rect
-	
-	albedo_rect.texture = PainterState.viewports.albedo.get_texture()
-	roughness_rect.texture = PainterState.viewports.roughness.get_texture()
-	metalness_rect.texture = PainterState.viewports.metalness.get_texture()
-	emission_rect.texture = PainterState.viewports.emission.get_texture()
-		
 	# little hack
 	_on_active_texture_changed(0)
 	
