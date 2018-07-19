@@ -2,8 +2,7 @@ extends WorldEnvironment
 
 onready var state_machine = $InputStates
 onready var parent_viewport = get_parent()
-onready var depth_buffer = Textures.get_node("depth_buffer")
-
+onready var camera =  $spatial/camroot/cam
 
 func _process(delta):
 	
@@ -13,30 +12,7 @@ func _process(delta):
 	if !Dialogs.any_dialog_open():
 		state_machine.update(delta)
 	
-	update_depth_buffer()
-	
-func update_depth_buffer(): # TODO move this into the Textures scene
-	# update depth buffer size to match parent viewport
-	depth_buffer.size = parent_viewport.size
-	
-	# update the camera slave to match the actual camera
-	var camera_slave = Textures.get_node("depth_buffer/cam_slave")
-	var camera = $spatial/camroot/cam
-	camera_slave.global_transform = camera.global_transform
-	camera_slave.fov = camera.fov
-	camera_slave.near = camera.near
-	camera_slave.far = camera.far
-	
-	# set depth_quad distance to camera to average of znear and zfar
-	# this prevents the depth quad disappearing due to falling outside the depth buffer range
-	camera_slave.get_node("depth_quad").translation.z = (camera.near + camera.far) / -2.0
-	
-	# this forces a viewport redraw
-	# TODO new viewport is slow since it's drawing the object TWICE, once in main buffer and once in depth buffer.
-	# only update the viewport when camera transform/fov/near/far changes
-	# depth_buffer.render_target_update_mode = Viewport.UPDATE_ONCE
-	# Update - new bug appeared! when viewport is thin and you change znear, the viewport doesn't clear itself anymore
-	# UPDATE2 - even after uncommenting this, the viewport still occasionally ends up in no-clear mode
+
 
 func _on_ViewportUI_gui_input(ev):
 	if !Dialogs.any_dialog_open():
@@ -45,7 +21,6 @@ func _on_ViewportUI_gui_input(ev):
 func _ready():
 	
 	PainterState.main = self
-	PainterState.textures_node = Textures # TODO get rid of textures_node, no longer needed
 	
 	state_machine.switch_state("Paint")
 	
@@ -58,7 +33,7 @@ func _ready():
 	$debug_todo_remove_this.texture =  Textures.get_node("depth_buffer").get_texture()
 	
 	# setup the paint shader's viewport textures
-	var paint_shader = Textures.get_node("paint/albedo/paint_sprite").material
+	var paint_shader = preload("res://assets/shaders/paint_shader.tres") 
 	paint_shader.set_shader_param("meshtex_pos", Textures.get_node("mesh/position").get_texture())
 	paint_shader.set_shader_param("meshtex_normal",  Textures.get_node("mesh/normal").get_texture())
 	paint_shader.set_shader_param("depth_tex", Textures.get_node("depth_buffer").get_texture())

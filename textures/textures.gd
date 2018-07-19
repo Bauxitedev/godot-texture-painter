@@ -2,7 +2,7 @@ extends Node
 
 var should_paint = false
 var should_paint_decal = false
-
+onready var depth_buffer = get_node("depth_buffer")
 
 enum Slot {
 	ALBEDO,
@@ -14,7 +14,35 @@ enum Slot {
 # Which slot we are currently painting on
 var current_slot = ALBEDO
 
+func _process(delta):
+	update_depth_buffer()
+	
+func update_depth_buffer(): 
 
+	# update depth buffer size to match parent viewport
+	var parent_viewport = PainterState.main.get_parent()
+	depth_buffer.size = parent_viewport.size
+	
+	var camera =  PainterState.main.camera
+	
+	# update the camera slave to match the actual camera
+	var camera_slave = Textures.get_node("depth_buffer/cam_slave")
+	camera_slave.global_transform = camera.global_transform
+	camera_slave.fov = camera.fov
+	camera_slave.near = camera.near
+	camera_slave.far = camera.far
+	
+	# set depth_quad distance to camera to average of znear and zfar
+	# this prevents the depth quad disappearing due to falling outside the depth buffer range
+	camera_slave.get_node("depth_quad").translation.z = (camera.near + camera.far) / -2.0
+	
+	# this forces a viewport redraw
+	# TODO new viewport is slow since it's drawing the object TWICE, once in main buffer and once in depth buffer.
+	# only update the viewport when camera transform/fov/near/far changes
+	# depth_buffer.render_target_update_mode = Viewport.UPDATE_ONCE
+	# Update - new bug appeared! when viewport is thin and you change znear, the viewport doesn't clear itself anymore
+	# UPDATE2 - even after uncommenting this, the viewport still occasionally ends up in no-clear mode
+	
 func update_shaders(mouse_pos, size, cam, color):
 	
 	var parent_viewport = PainterState.main.get_parent()

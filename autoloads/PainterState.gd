@@ -36,14 +36,13 @@ var paint_viewport = {
 	"colorpicker_node": null,
 }
 
-var textures_node = null
 var main = null
 
 var active_texture = 0
 
 func set_active_texture(tex):
 	active_texture = tex
-	textures_node.current_slot = tex
+	Textures.current_slot = tex
 	emit_signal("active_texture_changed", tex)
 
 func _ready():

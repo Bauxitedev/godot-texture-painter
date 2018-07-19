@@ -50,7 +50,7 @@ func update(delta):
 	
 	# Hack to prevent painting being stuck
 	if !Input.is_mouse_button_pressed(BUTTON_LEFT) && !Input.is_mouse_button_pressed(BUTTON_RIGHT):
-		PainterState.textures_node.should_paint = false 
+		Textures.should_paint = false 
 	
 	# Set cursor size/pos
 	var rect_size = Vector2(vp.size.y / PainterState.brush.size, vp.size.y / PainterState.brush.size) / 2
@@ -58,7 +58,7 @@ func update(delta):
 	PainterState.paint_viewport.cursor_node.rect_position = get_viewport().get_mouse_position() - rect_size / 2
 	
 	# Update paint shaders
-	PainterState.textures_node.update_shaders(mouse_pos, PainterState.brush.size, cam, PainterState.brush.color)
+	Textures.update_shaders(mouse_pos, PainterState.brush.size, cam, PainterState.brush.color)
 
 func handle_input(event):
 	if event is InputEventMouseButton:
@@ -76,10 +76,10 @@ func handle_input(event):
 			return
 			
 		if event.pressed:
-			PainterState.textures_node.should_paint = true
-			PainterState.textures_node.should_paint_decal = event.button_index == BUTTON_RIGHT
+			Textures.should_paint = true
+			Textures.should_paint_decal = event.button_index == BUTTON_RIGHT
 		else:
-			PainterState.textures_node.should_paint = false
+			Textures.should_paint = false
 
 
 func rotate_cam(delta):
