@@ -2,24 +2,10 @@
 
 [ext_resource path="res://assets/shaders/seamfixer_shader.shader" type="Shader" id=1]
 
-[sub_resource type="ViewportTexture" id=1]
-
-resource_local_to_scene = true
-flags = 0
-viewport_path = NodePath("textures/mesh/position")
-
-[sub_resource type="ViewportTexture" id=2]
-
-resource_local_to_scene = true
-flags = 0
-viewport_path = NodePath("textures/paint/albedo")
-
 [resource]
 
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource( 1 )
-shader_param/paint_tex = SubResource( 2 )
-shader_param/meshtex_pos = SubResource( 1 )
 _sections_unfolded = [ "Resource", "shader_param" ]
 

@@ -11,7 +11,7 @@ func _ready():
 	PainterState.paint_viewport.colorpicker_node = $View/MainFrame/LeftPanel/PaintViewport/ViewportUI/ColorPicker
 	
 	# Put the paint viewports in PainterState.viewports and assign TextureRects
-	var paint_vps = paint_viewport.get_node("main/textures/paint").get_children()
+	var paint_vps = Textures.get_node("paint").get_children()
 	for paint_vp in paint_vps:
 		var vp_name = paint_vp.name
 		PainterState.viewports[vp_name] = paint_vp
@@ -19,7 +19,7 @@ func _ready():
 		texture_rect.texture = paint_vp.get_texture()
 
 	# Put the utility viewports in PainterState.utility_viewports
-	var utility_vps = paint_viewport.get_node("main/textures/mesh").get_children()
+	var utility_vps = Textures.get_node("mesh").get_children()
 	for utility_vp in utility_vps:
 		PainterState.utility_viewports[utility_vp.name] = utility_vp
 	

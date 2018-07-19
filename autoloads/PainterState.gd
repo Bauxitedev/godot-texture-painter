@@ -37,6 +37,7 @@ var paint_viewport = {
 }
 
 var textures_node = null
+var main = null
 
 var active_texture = 0
 

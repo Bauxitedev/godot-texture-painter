@@ -3,7 +3,6 @@ extends Node
 var should_paint = false
 var should_paint_decal = false
 
-onready var parent_viewport = get_parent().get_parent()
 
 enum Slot {
 	ALBEDO,
@@ -17,6 +16,9 @@ var current_slot = ALBEDO
 
 
 func update_shaders(mouse_pos, size, cam, color):
+	
+	var parent_viewport = PainterState.main.get_parent()
+	
 	
 	var cam_matrix = cam.global_transform
 	
