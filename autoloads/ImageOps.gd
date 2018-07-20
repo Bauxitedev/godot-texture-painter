@@ -17,7 +17,7 @@ func open_image():
 	Dialogs.add_child(dialog)
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
-	Dialogs.remove_child(dialog)
+	dialog.queue_free()
 	
 	new_image() 	# not technically needed but just to be sure
 	var textures = {}
@@ -59,7 +59,7 @@ func put_textures_into_viewports(textures):
 		
 	# Remove the sprites
 	for spr in sprites:
-		spr.get_parent().remove_child(spr)
+		spr.queue_free()
 		
 
 func save_image():
@@ -72,7 +72,7 @@ func save_image():
 	Dialogs.add_child(dialog)
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
-	Dialogs.remove_child(dialog)
+	dialog.queue_free()
 	
 	# Save it to file
 	var filename = dialog.current_path
@@ -100,7 +100,8 @@ func import_image():
 	Dialogs.add_child(dialog)
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
-	Dialogs.remove_child(dialog)
+	dialog.queue_free()
+	var path = dialog.current_path
 	
 	# Ask what slot we want to import to
 	var slot_dialog = AcceptDialog.new()
@@ -111,16 +112,15 @@ func import_image():
 	slot_dialog.popup_centered(Vector2(400,100))
 	
 	# Delete the OK button
-	var ok = slot_dialog.get_ok()
-	ok.get_parent().remove_child(ok) 
+	slot_dialog.get_ok().queue_free()
 	
 	# Wait for user to pick a slot
 	var result = yield(slot_dialog, "custom_action")
-	Dialogs.remove_child(slot_dialog)
+	slot_dialog.queue_free()
 	
 	# Import the image
 	var img = Image.new()
-	img.load(dialog.current_path)
+	img.load(path)
 	var tex = ImageTexture.new()
 	tex.create_from_image(img)
 	
@@ -136,7 +136,7 @@ func export_image():
 	dialog.access = FileDialog.ACCESS_FILESYSTEM	
 	dialog.popup_centered_ratio(0.75)
 	yield(dialog, "file_selected")
-	Dialogs.remove_child(dialog)
+	dialog.queue_free()
 	
 	# Gather save filenames
 	var files_to_save = {}
@@ -155,7 +155,7 @@ func export_image():
 	Dialogs.add_child(conf_dialog)
 	conf_dialog.popup_centered(Vector2(400,200))
 	yield(conf_dialog, "confirmed")
-	Dialogs.remove_child(conf_dialog)
+	conf_dialog.queue_free()
 	
 	# Finally save to PNG (TODO allow bitdepth control and other formats)
 	# BTW parallellization here brings export time from 2.2sec to 0.7sec
