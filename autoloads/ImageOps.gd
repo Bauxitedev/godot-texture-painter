@@ -9,17 +9,10 @@ func new_image():
 		
 func open_image():
 	
-	# Get load path
-	var dialog = FileDialog.new()
-	dialog.mode = FileDialog.MODE_OPEN_FILE
-	dialog.add_filter("*%s;Texture Painter Save File" % save_extension)
-	dialog.access = FileDialog.ACCESS_FILESYSTEM
-	Dialogs.add_child(dialog)
-	dialog.popup_centered_ratio(0.75)
-	yield(dialog, "file_selected")
-	dialog.queue_free()
+	# Show dialog
+	var dialog = yield(Dialogs.create_file_dialog(FileDialog.MODE_OPEN_FILE, ["*%s;Texture Painter Save File" % save_extension]), "completed")
 	
-	new_image() 	# not technically needed but just to be sure
+	new_image()  # Not technically needed but just to be sure
 	var textures = {}
 	
 	# Read the ImageTextures and put them in a dictionary
@@ -64,15 +57,8 @@ func put_textures_into_viewports(textures):
 
 func save_image():
 	
-	
-	# Get save path
-	var dialog = FileDialog.new()
-	dialog.add_filter("*%s;Texture Painter Save File" % save_extension)
-	dialog.access = FileDialog.ACCESS_FILESYSTEM
-	Dialogs.add_child(dialog)
-	dialog.popup_centered_ratio(0.75)
-	yield(dialog, "file_selected")
-	dialog.queue_free()
+	# Show dialog
+	var dialog = yield(Dialogs.create_file_dialog(FileDialog.MODE_SAVE_FILE, "*%s;Texture Painter Save File" % save_extension), "completed")
 	
 	# Save it to file
 	var filename = dialog.current_path
@@ -93,14 +79,7 @@ func save_image():
 func import_image():
 	
 	# Get load path
-	var dialog = FileDialog.new()
-	dialog.mode = FileDialog.MODE_OPEN_FILE
-	dialog.access = FileDialog.ACCESS_FILESYSTEM
-	dialog.add_filter("*.png;PNG image;*.jpg;JPG image")
-	Dialogs.add_child(dialog)
-	dialog.popup_centered_ratio(0.75)
-	yield(dialog, "file_selected")
-	dialog.queue_free()
+	var dialog = yield(Dialogs.create_file_dialog(FileDialog.MODE_OPEN_FILE, ["*.png;PNG image", "*.jpg;JPG image"]), "completed")
 	var path = dialog.current_path
 	
 	# Ask what slot we want to import to
@@ -110,9 +89,7 @@ func import_image():
 		slot_dialog.add_button(slot.capitalize(), true, slot)
 	Dialogs.add_child(slot_dialog)
 	slot_dialog.popup_centered(Vector2(400,100))
-	
-	# Delete the OK button
-	slot_dialog.get_ok().queue_free()
+	slot_dialog.get_ok().queue_free() # Delete the OK button
 	
 	# Wait for user to pick a slot
 	var result = yield(slot_dialog, "custom_action")
@@ -131,12 +108,7 @@ func import_image():
 func export_image():
 	
 	# Get save path
-	var dialog = FileDialog.new()
-	Dialogs.add_child(dialog)
-	dialog.access = FileDialog.ACCESS_FILESYSTEM	
-	dialog.popup_centered_ratio(0.75)
-	yield(dialog, "file_selected")
-	dialog.queue_free()
+	var dialog = yield(Dialogs.create_file_dialog(FileDialog.MODE_SAVE_FILE, []), "completed")
 	
 	# Gather save filenames
 	var files_to_save = {}
