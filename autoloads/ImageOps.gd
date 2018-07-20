@@ -83,17 +83,8 @@ func import_image():
 	var path = dialog.current_path
 	
 	# Ask what slot we want to import to
-	var slot_dialog = AcceptDialog.new()
-	slot_dialog.dialog_text = "On what slot do you want to import the texture?"
-	for slot in PainterState.viewports:
-		slot_dialog.add_button(slot.capitalize(), true, slot)
-	Dialogs.add_child(slot_dialog)
-	slot_dialog.popup_centered(Vector2(400,100))
-	slot_dialog.get_ok().queue_free() # Delete the OK button
-	
-	# Wait for user to pick a slot
-	var result = yield(slot_dialog, "custom_action")
-	slot_dialog.queue_free()
+	var buttons = PainterState.viewports.keys()
+	var result = yield(Dialogs.create_accept_dialog("On what slot do you want to import the texture?", buttons), "completed")[1]
 	
 	# Import the image
 	var img = Image.new()
@@ -116,18 +107,11 @@ func export_image():
 		files_to_save["%s_%s.png" % [dialog.current_path, vp.name]] = vp
 	
 	# Show confirmation dialog
-	var conf_dialog = ConfirmationDialog.new()
-	
 	var dialog_text = "This will save the following files:\n"
 	for f in files_to_save:
 		dialog_text += "\n · %s" % ProjectSettings.globalize_path(f)
 	dialog_text += "\n\nContinue?"
-	conf_dialog.dialog_text = dialog_text
-	
-	Dialogs.add_child(conf_dialog)
-	conf_dialog.popup_centered(Vector2(400,200))
-	yield(conf_dialog, "confirmed")
-	conf_dialog.queue_free()
+	var conf_dialog = yield(Dialogs.create_confirmation_dialog(dialog_text), "completed")
 	
 	# Finally save to PNG (TODO allow bitdepth control and other formats)
 	# BTW parallellization here brings export time from 2.2sec to 0.7sec
