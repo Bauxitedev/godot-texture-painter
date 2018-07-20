@@ -2,13 +2,14 @@
 
 [ext_resource path="res://views/Viewport/Viewport.gd" type="Script" id=1]
 [ext_resource path="res://views/Viewport/InputStates.gd" type="Script" id=2]
-[ext_resource path="res://views/Viewport/Paint.gd" type="Script" id=3]
-[ext_resource path="res://views/Viewport/Rotate.gd" type="Script" id=4]
-[ext_resource path="res://views/Viewport/Zoom.gd" type="Script" id=5]
-[ext_resource path="res://views/Viewport/Pan.gd" type="Script" id=6]
-[ext_resource path="res://views/Viewport/BrushResize.gd" type="Script" id=7]
-[ext_resource path="res://views/Viewport/BrushSoftnessChange.gd" type="Script" id=8]
-[ext_resource path="res://views/Viewport/ColorPick.gd" type="Script" id=9]
+[ext_resource path="res://views/Viewport/states/Paint.gd" type="Script" id=3]
+[ext_resource path="res://views/Viewport/states/Rotate.gd" type="Script" id=4]
+[ext_resource path="res://views/Viewport/states/Zoom.gd" type="Script" id=5]
+[ext_resource path="res://views/Viewport/states/Pan.gd" type="Script" id=6]
+[ext_resource path="res://views/Viewport/states/BrushResize.gd" type="Script" id=7]
+[ext_resource path="res://views/Viewport/states/BrushSoftnessChange.gd" type="Script" id=8]
+[ext_resource path="res://views/Viewport/states/ColorPick.gd" type="Script" id=9]
+
 
 [sub_resource type="ProceduralSky" id=1]
 
