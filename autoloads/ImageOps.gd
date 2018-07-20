@@ -58,7 +58,7 @@ func put_textures_into_viewports(textures):
 func save_image():
 	
 	# Show dialog
-	var dialog = yield(Dialogs.create_file_dialog(FileDialog.MODE_SAVE_FILE, "*%s;Texture Painter Save File" % save_extension), "completed")
+	var dialog = yield(Dialogs.create_file_dialog(FileDialog.MODE_SAVE_FILE, ["*%s;Texture Painter Save File" % save_extension]), "completed")
 	
 	# Save it to file
 	var filename = dialog.current_path

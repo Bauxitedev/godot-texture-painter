@@ -1,11 +1,14 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://textures/textures.gd" type="Script" id=1]
-[ext_resource path="res://textures/mesh/base.tscn" type="PackedScene" id=2]
-[ext_resource path="res://textures/mesh/position.gd" type="Script" id=3]
-[ext_resource path="res://textures/mesh/normal.gd" type="Script" id=4]
+[ext_resource path="res://autoloads/textures/Textures.gd" type="Script" id=1]
+[ext_resource path="res://autoloads/textures/mesh/base.tscn" type="PackedScene" id=2]
+[ext_resource path="res://autoloads/textures/mesh/position.gd" type="Script" id=3]
+[ext_resource path="res://autoloads/textures/mesh/normal.gd" type="Script" id=4]
 [ext_resource path="res://assets/shaders/paint_shader.tres" type="Material" id=5]
 [ext_resource path="res://assets/shaders/depth_buffer_shader.tres" type="Material" id=6]
+
+
+
 
 [sub_resource type="Environment" id=1]
 

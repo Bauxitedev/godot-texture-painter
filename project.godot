@@ -20,7 +20,7 @@ PainterState="*res://autoloads/PainterState.gd"
 SaveManager="*res://autoloads/SaveManager.cs"
 Dialogs="*res://autoloads/Dialogs.gd"
 ImageOps="*res://autoloads/ImageOps.gd"
-Textures="*res://textures/textures.tscn"
+Textures="*res://autoloads/textures/Textures.tscn"
 
 [display]
 

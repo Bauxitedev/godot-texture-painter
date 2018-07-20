@@ -1,4 +1,4 @@
-extends "res://textures/mesh/base.gd"
+extends "res://autoloads/textures/mesh/base.gd"
 
 # Extracts normal data for this triangle
 func _get_triangle_data(datatool, p1i, p2i, p3i):
