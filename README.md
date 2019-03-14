@@ -10,6 +10,8 @@ You can paint albedo, roughness, metalness and emission. Also, you can right cli
 
 [Here's a video of it in action.](https://www.youtube.com/watch?v=nbG_XAxmIlA)
 
+***Note: does not work in Godot 3.1 yet. I'll try to fix it when I have some more time.***
+
 # How it works
 
 The program works using two kinds of textures: `mesh` and `paint` textures. They are organized in the scene tree like this:
