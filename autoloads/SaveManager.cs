@@ -1,11 +1,11 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization.Formatters.Binary;
 using ICSharpCode.SharpZipLib.Zip;
 using System.IO;
 using System.Linq;
+using Godot.Collections;
 using File = System.IO.File;
 
 //Need to use C# for this because GDscript can't zip files yet
@@ -14,7 +14,7 @@ public class SaveManager : Node
 {
     //This dictionary temporarily stores either the textures we want to save, or the textures we want to load.
     //Needed since Godot can't marshal dictionaries and arrays of resources yet.
-    private static Dictionary<string, Texture> Textures = new Dictionary<string, Texture>();
+    private static System.Collections.Generic.Dictionary<string, Texture> Textures = new System.Collections.Generic.Dictionary<string, Texture>();
     private static string SlotsPrefix = "slots/";
 
     public void ClearTextures()
@@ -85,7 +85,7 @@ public class SaveManager : Node
         GD.Print("load");
 
 
-        var textures = new Dictionary<string, Texture>();
+        var textures = new System.Collections.Generic.Dictionary<string, Texture>();
 
         using (ZipInputStream s = new ZipInputStream(File.OpenRead(filename)))
         {
@@ -100,11 +100,16 @@ public class SaveManager : Node
                 if (!entry.IsFile) continue;
                 if (!entry.Name.StartsWith(SlotsPrefix)) continue;
 
-                var dict = (Dictionary<object, object>) new BinaryFormatter().Deserialize(s);
+                var dict = (System.Collections.Generic.Dictionary<object, object>) new BinaryFormatter().Deserialize(s);
                 Debug.Assert(1 == s.Read(new byte[1], 0, 1)); //DO NOT REMOVE THIS! REQUIRED!!!
                 
                 ImageTexture tex = new ImageTexture();
-                tex.CreateFromImage(new Image {Data = dict});
+                var dictConverted = new Dictionary(); //NOTE - this is a Godot dictionary, not a C# one, so we need to convert it:
+
+                foreach (var kv in dict)
+                    dictConverted.Add(kv.Key, kv.Value);
+                
+                tex.CreateFromImage(new Image {Data = dictConverted});
                 
                 textures.Add(entry.Name.Replace(SlotsPrefix, ""), tex);
 

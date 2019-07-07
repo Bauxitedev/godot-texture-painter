@@ -5,20 +5,16 @@
 [ext_resource path="res://assets/textures/logo.svg" type="Texture" id=3]
 
 [resource]
-
-render_priority = 0
 shader = ExtResource( 1 )
 shader_param/cam_mat = Transform( -0.985326, 0.0726706, -0.154439, 0, 0.904834, 0.425765, 0.170682, 0.419518, -0.891556, -1.92096, 2.95153, -5.09335 )
 shader_param/fovy_degrees = 70.0
 shader_param/z_near = 0.05
 shader_param/z_far = 100.0
 shader_param/aspect = 1.0
-shader_param/aspect_shadow = null
+shader_param/aspect_shadow = 1.0
 shader_param/mouse_pos = null
 shader_param/decal = null
 shader_param/scale = 8.0
-shader_param/color = null
+shader_param/color = Plane( 1, 1, 1, 1 )
 shader_param/brush_tex = ExtResource( 2 )
 shader_param/spot_tex = ExtResource( 3 )
-_sections_unfolded = [ "Resource", "shader_param" ]
-

@@ -3,8 +3,4 @@
 [ext_resource path="res://assets/shaders/depth_buffer_shader.shader" type="Shader" id=1]
 
 [resource]
-
-render_priority = 0
 shader = ExtResource( 1 )
-_sections_unfolded = [ "Resource" ]
-

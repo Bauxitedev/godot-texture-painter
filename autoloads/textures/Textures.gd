@@ -12,7 +12,7 @@ enum Slot {
 }
 
 # Which slot we are currently painting on
-var current_slot = ALBEDO
+var current_slot = Slot.ALBEDO
 
 func _process(delta):
 	update_depth_buffer()
