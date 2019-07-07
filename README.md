@@ -10,7 +10,7 @@ You can paint albedo, roughness, metalness and emission. Also, you can right cli
 
 [Here's a video of it in action.](https://www.youtube.com/watch?v=nbG_XAxmIlA)
 
-***Note: does not work in Godot 3.1 yet. I'll try to fix it when I have some more time.***
+***Note: requires Godot 3.1.1 Mono edition. Older versions probably won't work.***
 
 # How it works
 
